@@ -14,9 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
-        <Navbar/>
-        {children}</body>
+      <body className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
