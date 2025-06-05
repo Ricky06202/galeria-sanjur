@@ -1,7 +1,6 @@
 import { ColoresCard } from "@/modules/colores/ColoresCard";
 import { Dropdown } from "@/modules/shared/components/Dropdown";
 import { SearchBar } from "@/modules/shared/components/SearchBar";
-import { FC } from "react";
 
 const colores = [
   {
@@ -84,7 +83,7 @@ const colores = [
 
 ];
 
-export const MedallasPage: FC = () => {
+export default function MedallasPage() {
   return (
     <>
       <div className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 gap-4">
@@ -113,4 +112,3 @@ export const MedallasPage: FC = () => {
   );
 };
 
-export default MedallasPage;

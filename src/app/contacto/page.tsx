@@ -1,6 +1,5 @@
-import { FC } from "react";
 
-export const MedallasPage: FC = () => {
+export default function MedallasPage() {
     return (
         <div className="grid grid-cols-5 grid-rows-3 w-full h-96">
             <div className="bg-red-500 col-span-2 row-span-3">Ubicacion</div>
@@ -10,4 +9,3 @@ export const MedallasPage: FC = () => {
     );
 }
 
-export default MedallasPage;

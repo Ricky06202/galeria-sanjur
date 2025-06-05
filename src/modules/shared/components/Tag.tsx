@@ -1,8 +1,8 @@
 import { FC } from "react";
 interface ITagProps {
     children: React.ReactNode;
-    className: string;
-    color: string;
+    className?: string;
+    color?: string;
 };
 
 export const Tag: FC<ITagProps> = ({ children, className, color }) => {
