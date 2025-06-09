@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Tag } from "../shared/components/Tag";
+import { getAppropriateTextColor } from "../shared/logic/colorContrast";
 interface IColoresCardProps {
   imagen: string;
   color: {
@@ -24,10 +25,10 @@ export const ColoresCard: FC<IColoresCardProps> = ({
       <div className="flex flex-col items-center p-3 h-full bg-gray-100 dark:bg-gray-900">
         <ul className="grid grid-cols-2 grid-rows-2">
           <li className="flex justify-center items-center text-center">
-            <Tag color={color.valor}>{color.texto}</Tag>
+            <Tag colorFondo={color.valor} colorTexto={getAppropriateTextColor(color.valor)}>{color.texto}</Tag>
           </li>
           <li className="flex justify-center items-center">
-            <Tag className="bg-blue-800!">{marca}</Tag>
+            <Tag className="bg-blue-800 text-white">{marca}</Tag>
           </li>
           <li className="col-span-2 flex justify-center items-center">
             <div>{cantidad + " Rollos Disponibles"}</div>

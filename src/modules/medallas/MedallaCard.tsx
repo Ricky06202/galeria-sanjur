@@ -29,7 +29,7 @@ export const MedallaCard: FC<IMedallaCardProps> = ({
             {"Colores: " + colores.join(", ")}
           </li>
           <li className="flex justify-center items-center">
-            <Tag className="bg-blue-800!">{categoria}</Tag>
+            <Tag className="bg-blue-800 text-white">{categoria}</Tag>
           </li>
           <li className="flex justify-center items-center">
             <div>{duracion}</div>

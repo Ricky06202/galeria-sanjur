@@ -1,0 +1,58 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Creaciones {
+  id                    Int                     @id @default(autoincrement())
+  nombre                String
+  imagen                String
+  duracion              Int
+  precio                Float
+  categoria_id          Int
+  categoria             Categoria               @relation(fields: [categoria_id], references: [id])
+  Creaciones_Filamentos Creaciones_Filamentos[]
+}
+
+model Categoria {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  creaciones Creaciones[]
+}
+
+model Filamentos {
+  id                    Int                     @id @default(autoincrement())
+  nombre                String
+  imagen                String
+  cantidad              Int
+  marca_id              Int
+  color_id              Int
+  Marca                 Marca                   @relation(fields: [marcaId], references: [id])
+  marcaId               Int
+  Color                 Color                   @relation(fields: [colorId], references: [id])
+  colorId               Int
+  Creaciones_Filamentos Creaciones_Filamentos[]
+}
+
+model Marca {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  filamentos Filamentos[]
+}
+
+model Color {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  valor_hex  String
+  filamentos Filamentos[]
+}
+
+model Creaciones_Filamentos {
+  creaciones_id Int
+  filamentos_id Int
+  Creaciones    Creaciones @relation(fields: [creaciones_id], references: [id])
+  Filamentos    Filamentos @relation(fields: [filamentos_id], references: [id])
+
+  @@id([creaciones_id, filamentos_id])
+}

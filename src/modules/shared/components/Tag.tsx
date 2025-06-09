@@ -2,12 +2,13 @@ import { FC } from "react";
 interface ITagProps {
     children: React.ReactNode;
     className?: string;
-    color?: string;
+    colorFondo?: string;
+    colorTexto?: string;
 };
 
-export const Tag: FC<ITagProps> = ({ children, className, color }) => {
+export const Tag: FC<ITagProps> = ({ children, className, colorFondo, colorTexto }) => {
     return (
-        <div style={{backgroundColor: color}} className={"px-2 rounded-full w-fit " + className }>
+        <div style={{ backgroundColor: colorFondo, color: colorTexto }} className={"px-2 rounded-full w-fit " + className}>
             {children}
         </div>
     );
