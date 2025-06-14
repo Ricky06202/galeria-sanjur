@@ -14,15 +14,15 @@ model Creaciones {
   imagen                String
   duracion              Int
   precio                Float
-  categoria_id          Int
-  categoria             Categoria               @relation(fields: [categoria_id], references: [id])
+  categoria_id          Int?
+  Categoria             Categoria?               @relation(fields: [categoria_id], references: [id], onDelete: SetNull)
   Creaciones_Filamentos Creaciones_Filamentos[]
 }
 
 model Categoria {
   id         Int          @id @default(autoincrement())
   nombre     String
-  creaciones Creaciones[]
+  Creaciones Creaciones[]
 }
 
 model Filamentos {
@@ -30,31 +30,31 @@ model Filamentos {
   nombre                String
   imagen                String
   cantidad              Int
-  marca_id              Int
-  color_id              Int
-  Color                 Color                   @relation(fields: [color_id], references: [id])
-  Marca                 Marca                   @relation(fields: [marca_id], references: [id])
+  marca_id              Int?
+  color_id              Int?
+  Color                 Color?                   @relation(fields: [color_id], references: [id], onDelete: SetNull)
+  Marca                 Marca?                   @relation(fields: [marca_id], references: [id], onDelete: SetNull)
   Creaciones_Filamentos Creaciones_Filamentos[]
 }
 
 model Marca {
   id         Int          @id @default(autoincrement())
   nombre     String
-  filamentos Filamentos[]
+  Filamentos Filamentos[]
 }
 
 model Color {
   id         Int          @id @default(autoincrement())
   nombre     String
   valor_hex  String
-  filamentos Filamentos[]
+  Filamentos Filamentos[]
 }
 
 model Creaciones_Filamentos {
   creaciones_id Int
   filamentos_id Int
-  Creaciones    Creaciones @relation(fields: [creaciones_id], references: [id])
-  Filamentos    Filamentos @relation(fields: [filamentos_id], references: [id])
+  Creaciones    Creaciones @relation(fields: [creaciones_id], references: [id], onDelete: Cascade)
+  Filamentos    Filamentos @relation(fields: [filamentos_id], references: [id], onDelete: Cascade)
 
   @@id([creaciones_id, filamentos_id])
 }
