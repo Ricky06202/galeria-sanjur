@@ -2,9 +2,9 @@ import prisma from '@/modules/db/prisma'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { id } = await context.params
   const categoria = await prisma.categoria.findUnique({
     where: { id: parseInt(id) },
   })
@@ -20,9 +20,9 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { id } = await context.params
   const data = await request.json()
   const categoria = await prisma.categoria.update({
     where: { id: parseInt(id) },
@@ -37,9 +37,9 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params
+  const { id } = await context.params
   await prisma.categoria.delete({
     where: { id: parseInt(id) },
   })
