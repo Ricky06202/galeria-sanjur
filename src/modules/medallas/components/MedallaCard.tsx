@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { FC } from 'react'
 import { Tag } from '../../shared/components/Tag'
 import { Color } from '@/modules/shared/constants/creacionType'

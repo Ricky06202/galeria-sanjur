@@ -11,6 +11,7 @@ export const ListColores: FC<IListColoresProps> = ({colores}) => {
         {colores.map((color) => (
           <ColoresCard
             key={color.nombre}
+            nombre={color.nombre}
             imagen={color.imagen}
             color={{texto: color.Color.nombre, valor: color.Color.valor_hex}}
             marca={color.Marca.nombre}
