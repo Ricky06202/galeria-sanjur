@@ -1,3 +1,4 @@
+"use client";
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import Link from 'next/link';
 

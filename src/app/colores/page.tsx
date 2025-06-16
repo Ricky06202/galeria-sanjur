@@ -7,7 +7,7 @@ import { Dropdown } from '@/modules/shared/components/Dropdown'
 import { SearchBar } from '@/modules/shared/components/SearchBar'
 import { useEffect, useState } from 'react'
 
-export default function MedallasPage() {
+export default function ColoresPage() {
   const [busqueda, setBusqueda] = useState<string>('')
   const [color, setColor] = useState<string>('')
   const [disponibilidad, setDisponibilidad] = useState<string>('')
@@ -56,7 +56,13 @@ export default function MedallasPage() {
           onChange={(e) => setDisponibilidad(e.target.value)}
         />
       </div>
-      <ListColores colores={filamentos} />
+      {filamentos.length > 0 ? (
+        <ListColores colores={filamentos} />
+      ) : (
+        <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+          No se encontraron colores con los criterios seleccionados.
+        </div>
+      )}
     </>
   )
 }
