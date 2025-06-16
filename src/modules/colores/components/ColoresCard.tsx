@@ -1,6 +1,6 @@
+import { Tag } from "@/modules/shared/components/Tag";
+import { getAppropriateTextColor } from "@/modules/shared/logic/colorContrast";
 import { FC } from "react";
-import { Tag } from "../shared/components/Tag";
-import { getAppropriateTextColor } from "../shared/logic/colorContrast";
 interface IColoresCardProps {
   imagen: string;
   color: {
