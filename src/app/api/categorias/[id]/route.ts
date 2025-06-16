@@ -1,10 +1,10 @@
 import prisma from '@/modules/db/prisma'
+import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: Request
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const categoria = await prisma.categoria.findUnique({
     where: { id: parseInt(id) },
   })
@@ -20,9 +20,8 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
   const categoria = await prisma.categoria.update({
     where: { id: parseInt(id) },
@@ -36,10 +35,9 @@ export async function PUT(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: Request
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   await prisma.categoria.delete({
     where: { id: parseInt(id) },
   })

@@ -1,10 +1,10 @@
 import prisma from '@/modules/db/prisma'
+import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const creacionFilamento = await prisma.creaciones_Filamentos.findMany({
     where: {
       creaciones_id: parseInt(id),
@@ -52,9 +52,8 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
   const creacionFilamento = await prisma.creaciones_Filamentos.create({
     data: {
@@ -70,9 +69,8 @@ export async function POST(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
   const creacionFilamento = await prisma.creaciones_Filamentos.update({
     where: {
@@ -93,9 +91,8 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
   const creacionFilamento = await prisma.creaciones_Filamentos.delete({
     where: {

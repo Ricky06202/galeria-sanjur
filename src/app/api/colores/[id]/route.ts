@@ -1,10 +1,10 @@
 import prisma from '@/modules/db/prisma'
+import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const color = await prisma.color.findUnique({
     where: { id: parseInt(id) },
     select: {
@@ -22,9 +22,8 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
   const color = await prisma.color.update({
     where: { id: parseInt(id) },
@@ -38,9 +37,8 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const color = await prisma.color.delete({
     where: { id: parseInt(id) },
   })

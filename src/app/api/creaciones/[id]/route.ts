@@ -1,7 +1,10 @@
-import prisma from "@/modules/db/prisma";
+import prisma from '@/modules/db/prisma'
+import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
-export async function GET(request: Request, { params}: {params: {id:string}}) {
-  const {id} = await params;
+export async function GET(
+  request: Request,
+) {
+  const id = getIdFromRequest(request)
   const creacion = await prisma.creaciones.findUnique({
     where: {
       id: parseInt(id),
@@ -34,21 +37,23 @@ export async function GET(request: Request, { params}: {params: {id:string}}) {
           },
         },
       },
-    }
-  });
+    },
+  })
   if (!creacion) {
-    return new Response(JSON.stringify({ error: "Creacion not found" }), {
+    return new Response(JSON.stringify({ error: 'Creacion not found' }), {
       status: 404,
-    });
+    })
   }
   return new Response(JSON.stringify(creacion), {
     status: 200,
-  });
+  })
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
-  const { id } = await params;
-  const data = await request.json();
+export async function PUT(
+  request: Request,
+) {
+  const id = getIdFromRequest(request)
+  const data = await request.json()
   const creacion = await prisma.creaciones.update({
     where: { id: parseInt(id) },
     data: {
@@ -58,18 +63,20 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       precio: data.precio,
       categoria_id: data.categoria_id,
     },
-  });
+  })
   return new Response(JSON.stringify(creacion), {
     status: 200,
-  });
+  })
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const { id } = await params;
+export async function DELETE(
+  request: Request,
+) {
+  const id = getIdFromRequest(request)
   await prisma.creaciones.delete({
     where: { id: parseInt(id) },
-  });
+  })
   return new Response(null, {
     status: 204,
-  });
+  })
 }

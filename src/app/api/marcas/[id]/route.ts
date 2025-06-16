@@ -1,10 +1,10 @@
 import prisma from '@/modules/db/prisma'
+import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const marca = await prisma.marca.findUnique({
     where: { id: parseInt(id) },
     select: {
@@ -26,9 +26,8 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
   const data = await request.json()
 
   const marca = await prisma.marca.update({
@@ -45,9 +44,8 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
 ) {
-  const { id } = await params
+  const id = getIdFromRequest(request)
 
   const marca = await prisma.marca.delete({
     where: { id: parseInt(id) },
