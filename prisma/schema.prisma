@@ -10,8 +10,8 @@ datasource db {
 
 model Creaciones {
   id                    Int                     @id @default(autoincrement())
-  nombre                String
-  imagen                String
+  nombre                String @unique
+  imagen                String @db.Text
   duracion              Int
   precio                Float
   categoria_id          Int?
@@ -21,14 +21,14 @@ model Creaciones {
 
 model Categoria {
   id         Int          @id @default(autoincrement())
-  nombre     String
+  nombre     String @unique
   Creaciones Creaciones[]
 }
 
 model Filamentos {
   id                    Int                     @id @default(autoincrement())
-  nombre                String
-  imagen                String
+  nombre                String @unique
+  imagen                String @db.Text
   cantidad              Int
   marca_id              Int?
   color_id              Int?
@@ -39,13 +39,13 @@ model Filamentos {
 
 model Marca {
   id         Int          @id @default(autoincrement())
-  nombre     String
+  nombre     String @unique
   Filamentos Filamentos[]
 }
 
 model Color {
   id         Int          @id @default(autoincrement())
-  nombre     String
+  nombre     String @unique
   valor_hex  String
   Filamentos Filamentos[]
 }

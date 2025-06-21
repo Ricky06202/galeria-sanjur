@@ -20,6 +20,15 @@ export async function POST(request: Request) {
       nombre: data.nombre,
       valor_hex: data.valor_hex,
     },
+  }).catch((error) => {
+    console.error('Error al crear el color:', error)
+    return null
   })
+
+  if (!color) {
+    return new Response(JSON.stringify({ error: 'Error al crear el color' }), {
+      status: 500,
+    })
+  }
   return new Response(JSON.stringify(color), { status: 201 })
 }

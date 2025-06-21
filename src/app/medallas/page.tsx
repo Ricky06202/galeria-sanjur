@@ -2,9 +2,10 @@
 'use client'
 import { ListMedallas } from '@/modules/medallas/components/ListMedallas'
 import { useCategoriasStore } from '@/modules/medallas/stores/categoriasStore'
-import { useMedallasStore } from '@/modules/medallas/stores/medallasStore'
+import { useCreacionesStore } from '@/modules/medallas/stores/creacionesStore'
 import { Dropdown } from '@/modules/shared/components/Dropdown'
 import { SearchBar } from '@/modules/shared/components/SearchBar'
+import { redirect } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 export default function MedallasPage() {
@@ -12,13 +13,13 @@ export default function MedallasPage() {
   const [precio, setPrecio] = useState<string>('')
   const [busqueda, setBusqueda] = useState<string>('')
 
-  const medallas = useMedallasStore((state) => state.medallasFiltradas)
-  
-  const fetchMedallas = useMedallasStore((state) => state.fetchMedallas)
-  const filtroReset = useMedallasStore((state) => state.filtroReset)
-  const filtrarBusqueda = useMedallasStore((state) => state.filtrarBusqueda)
-  const filtrarCategoria = useMedallasStore((state) => state.filtrarCategoria)
-  const filtrarPrecio = useMedallasStore((state) => state.filtrarPrecio)
+  const medallas = useCreacionesStore((state) => state.creacionesFiltradas)
+
+  const fetchMedallas = useCreacionesStore((state) => state.fetchCreaciones)
+  const filtroReset = useCreacionesStore((state) => state.filtroReset)
+  const filtrarBusqueda = useCreacionesStore((state) => state.filtrarBusqueda)
+  const filtrarCategoria = useCreacionesStore((state) => state.filtrarCategoria)
+  const filtrarPrecio = useCreacionesStore((state) => state.filtrarPrecio)
 
   const categorias = useCategoriasStore((state) => state.categorias)
   const fetchCategorias = useCategoriasStore((state) => state.fetchCategorias)
@@ -34,6 +35,10 @@ export default function MedallasPage() {
     filtrarCategoria(categoria)
     filtrarPrecio(precio)
   }, [busqueda, categoria, precio])
+
+  const redirigirPagina = () => {
+    redirect('/medallas/nueva')
+  }
 
   return (
     <>
@@ -55,6 +60,12 @@ export default function MedallasPage() {
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
         />
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+          onClick={redirigirPagina}
+        >
+          Añadir
+        </button>
       </div>
       {medallas.length > 0 ? (
         <ListMedallas medallas={medallas} />

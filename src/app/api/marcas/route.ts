@@ -18,7 +18,16 @@ export async function POST(request: Request) {
     data: {
       nombre: data.nombre,
     },
+  }).catch((error) => {
+    console.error('Error al crear la marca:', error)
+    return null
   })
+
+  if (!marca) {
+    return new Response(JSON.stringify({ error: 'Error al crear la marca' }), {
+      status: 500,
+    })
+  }
   return new Response(JSON.stringify(marca), {
     status: 201,
   })

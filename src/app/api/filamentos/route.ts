@@ -37,7 +37,16 @@ export async function POST(request: Request) {
       marca_id: data.marca_id,
       color_id: data.color_id,
     }
+  }).catch((error) => {
+    console.error('Error al crear el filamento:', error)
+    return null
   })
+
+  if (!filamento) {
+    return new Response(JSON.stringify({ error: 'Error al crear el filamento' }), {
+      status: 500,
+    })
+  }
   return new Response(JSON.stringify(filamento), {
     status: 201,
   })

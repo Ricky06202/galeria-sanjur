@@ -1,10 +1,11 @@
-"use client"
+'use client'
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ListColores } from '@/modules/colores/components/ListColores'
 import { useColoresStore } from '@/modules/colores/stores/coloresStore'
 import { useFilamentosStore } from '@/modules/colores/stores/filamentosStore'
 import { Dropdown } from '@/modules/shared/components/Dropdown'
 import { SearchBar } from '@/modules/shared/components/SearchBar'
+import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function ColoresPage() {
@@ -15,13 +16,15 @@ export default function ColoresPage() {
   const filamentos = useFilamentosStore((state) => state.filamentosFiltrados)
   const fetchFilamentos = useFilamentosStore((state) => state.fetchFilamentos)
 
-  const filtrarBusqueda = useFilamentosStore(state => state.filtrarBusqueda)
-  const filtrarColor = useFilamentosStore(state => state.filtrarColor)
-  const filtrarDisponibilidad = useFilamentosStore(state => state.filtrarDisponibilidad)
-  const filtroReset = useFilamentosStore(state => state.filtroReset)
+  const filtrarBusqueda = useFilamentosStore((state) => state.filtrarBusqueda)
+  const filtrarColor = useFilamentosStore((state) => state.filtrarColor)
+  const filtrarDisponibilidad = useFilamentosStore(
+    (state) => state.filtrarDisponibilidad
+  )
+  const filtroReset = useFilamentosStore((state) => state.filtroReset)
 
-  const colores = useColoresStore(state => state.colores)
-  const fetchColores = useColoresStore(state => state.fetchColores)
+  const colores = useColoresStore((state) => state.colores)
+  const fetchColores = useColoresStore((state) => state.fetchColores)
 
   useEffect(() => {
     fetchFilamentos()
@@ -35,6 +38,10 @@ export default function ColoresPage() {
     filtrarDisponibilidad(disponibilidad)
   }, [busqueda, color, disponibilidad])
 
+  const redirigirPagina = () => {
+    redirect('/colores/nuevo')
+  }
+
   return (
     <>
       <div className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 gap-4">
@@ -45,7 +52,7 @@ export default function ColoresPage() {
         />
         <Dropdown
           title="Filtrar por Color"
-          options={['Todo', ...colores.map(color => color.nombre)]}
+          options={['Todo', ...colores.map((color) => color.nombre)]}
           value={color}
           onChange={(e) => setColor(e.target.value)}
         />
@@ -55,6 +62,12 @@ export default function ColoresPage() {
           value={disponibilidad}
           onChange={(e) => setDisponibilidad(e.target.value)}
         />
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+          onClick={redirigirPagina}
+        >
+          Añadir
+        </button>
       </div>
       {filamentos.length > 0 ? (
         <ListColores colores={filamentos} />

@@ -22,6 +22,6 @@ export const useColoresStore = create<ColoresStore>()(
           })
       },
     }),
-    { name: 'categorias-store' }
+    { name: 'colores-store' }
   )
 )

@@ -18,7 +18,16 @@ export async function POST(request: Request) {
     data: {
       nombre: data.nombre,
     },
+  }).catch((error) => {
+    console.error('Error al crear la categoria:', error)
+    return null
   })
+
+  if (!categoria) {
+    return new Response(JSON.stringify({ error: 'Error al crear la categoria' }), {
+      status: 500,
+    })
+  }
   return new Response(JSON.stringify(categoria), {
     status: 201,
   })

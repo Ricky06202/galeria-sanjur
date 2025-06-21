@@ -60,7 +60,16 @@ export async function POST(
       creaciones_id: parseInt(id),
       filamentos_id: data.filamentos_id,
     },
+  }).catch((error) => {
+    console.error('Error al agregar el filamento a la creacion:', error)
+    return null
   })
+
+  if (!creacionFilamento) {
+    return new Response(JSON.stringify({ error: 'Error al agregar el filamento a la creacion' }), {
+      status: 500,
+    })
+  }
 
   return new Response(JSON.stringify(creacionFilamento), {
     status: 201,

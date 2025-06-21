@@ -47,7 +47,16 @@ export async function POST(request: Request) {
       precio: data.precio,
       categoria_id: data.categoria_id,
     }
+  }).catch((error) => {
+    console.error('Error al crear la creacion:', error)
+    return null
   })
+
+  if (!creacion) {
+    return new Response(JSON.stringify({ error: 'Error al crear la creacion' }), {
+      status: 500,
+    })
+  }
   return new Response(JSON.stringify(creacion), {
     status: 201,
   })
