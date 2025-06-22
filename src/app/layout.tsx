@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+      <body className="scroll-smooth bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 max-w-7xl mx-auto">
         <Navbar />
         {children}
       </body>

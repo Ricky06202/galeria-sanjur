@@ -44,7 +44,7 @@ export default function ColoresPage() {
 
   return (
     <>
-      <div className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800 gap-4">
+      <div className="flex flex-wrap md:flex-nowrap justify-center items-center p-4 bg-white dark:bg-gray-800 gap-4 max-w-md mx-auto md:max-w-3xl lg:max-w-5xl">
         <SearchBar
           placeholder="Busca algo!"
           value={busqueda}
