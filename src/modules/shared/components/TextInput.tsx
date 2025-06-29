@@ -6,7 +6,7 @@ interface ITextInputProps {
   name: string
   placeholder: string
   value: string
-  type: string
+  type?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
