@@ -8,9 +8,9 @@ export default middleware((req) => {
   const { nextUrl, auth } = req
   const isAdmin = auth?.user?.role === "admin"
   // Redirige de "/" a "/home"
-  // if (nextUrl.pathname === "/") {
-  //   return NextResponse.redirect(new URL("/home", req.url))
-  // }
+  if (nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/home", req.url))
+  }
 
   // Proteger rutas /medallas/* y /colores/*, pero NO /medallas ni /colores
   const path = nextUrl.pathname
