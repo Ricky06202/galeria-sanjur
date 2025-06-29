@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import { Button } from './ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
@@ -13,7 +14,7 @@ import { useSession } from 'next-auth/react'
 
 
 export default function ProfileButton() {
-  const session = useSession()
+  const session = useSession()  
   const isLoggedIn = !!session?.data
   return (
     <DropdownMenu>
