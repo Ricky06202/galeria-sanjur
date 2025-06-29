@@ -6,6 +6,7 @@ interface ITextInputProps {
   name: string
   placeholder: string
   value: string
+  type: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -15,6 +16,7 @@ export default function TextInput({
   name,
   placeholder,
   value,
+  type = "text",
   onChange,
 }: ITextInputProps) {
   return (
@@ -26,7 +28,7 @@ export default function TextInput({
         {label}
       </label>
       <input
-        type="text"
+        type={type}
         id={name}
         className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-400 transition duration-300 ease-in-out text-gray-800 placeholder-gray-400"
         placeholder={placeholder}

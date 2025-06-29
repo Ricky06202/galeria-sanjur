@@ -188,8 +188,8 @@ export default function EditarMedalla() {
 
   return (
     // Contenedor principal: Centra el contenido, aplica padding y un fondo suave
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-10 font-inter text-gray-800">
-      <div className="bg-white p-6 sm:p-8 lg:p-12 rounded-2xl shadow-xl w-full max-w-4xl space-y-10 border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-10 font-inter text-gray-800">
+      <div className="p-6 sm:p-8 lg:p-12 rounded-2xl shadow-xl w-full max-w-4xl space-y-10 border border-gray-200">
         {/* Sección: Editar Creación 3D */}
         <section
           id="Creaciones"

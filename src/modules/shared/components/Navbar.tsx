@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Logo } from "./Logo";
 import { NavbarLink } from "./Navbar-Link";
+import ProfileButton from "./ProfileButton";
 
 export const Navbar: FC = () => {
     return (
@@ -11,7 +12,9 @@ export const Navbar: FC = () => {
                 <NavbarLink href={"/colores"} text="Colores" />
                 <NavbarLink href={"/contacto"} text="Contactanos" />
             </ul>
-            <div className="flex flex-1"></div>
+            <div className="flex flex-1 justify-center">
+                <ProfileButton />
+            </div>
         </nav>
     );
 }

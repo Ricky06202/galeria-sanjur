@@ -10,42 +10,42 @@ datasource db {
 
 model Creaciones {
   id                    Int                     @id @default(autoincrement())
-  nombre                String @unique
-  imagen                String @db.Text
+  nombre                String                  @unique
+  imagen                String                  @db.Text
   duracion              Int
   precio                Float
   categoria_id          Int?
-  Categoria             Categoria?               @relation(fields: [categoria_id], references: [id], onDelete: SetNull)
+  Categoria             Categoria?              @relation(fields: [categoria_id], references: [id], onDelete: SetNull)
   Creaciones_Filamentos Creaciones_Filamentos[]
 }
 
 model Categoria {
   id         Int          @id @default(autoincrement())
-  nombre     String @unique
+  nombre     String       @unique
   Creaciones Creaciones[]
 }
 
 model Filamentos {
   id                    Int                     @id @default(autoincrement())
-  nombre                String @unique
-  imagen                String @db.Text
+  nombre                String                  @unique
+  imagen                String                  @db.Text
   cantidad              Int
   marca_id              Int?
   color_id              Int?
-  Color                 Color?                   @relation(fields: [color_id], references: [id], onDelete: SetNull)
-  Marca                 Marca?                   @relation(fields: [marca_id], references: [id], onDelete: SetNull)
+  Color                 Color?                  @relation(fields: [color_id], references: [id], onDelete: SetNull)
+  Marca                 Marca?                  @relation(fields: [marca_id], references: [id], onDelete: SetNull)
   Creaciones_Filamentos Creaciones_Filamentos[]
 }
 
 model Marca {
   id         Int          @id @default(autoincrement())
-  nombre     String @unique
+  nombre     String       @unique
   Filamentos Filamentos[]
 }
 
 model Color {
   id         Int          @id @default(autoincrement())
-  nombre     String @unique
+  nombre     String       @unique
   valor_hex  String
   Filamentos Filamentos[]
 }
@@ -57,4 +57,81 @@ model Creaciones_Filamentos {
   Filamentos    Filamentos @relation(fields: [filamentos_id], references: [id], onDelete: Cascade)
 
   @@id([creaciones_id, filamentos_id])
+}
+
+// Auth ----------------------------------------------------------------------------------------------
+
+enum Role {
+  user
+  admin
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  password      String?
+  role          Role            @default(user)
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String   @unique
+  token      String
+  expires    DateTime
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
 }

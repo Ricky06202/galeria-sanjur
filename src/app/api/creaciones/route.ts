@@ -1,4 +1,4 @@
-import prisma from '@/modules/db/prisma'
+import prisma from "@/modules/shared/lib/prisma"
 
 export async function GET() {
   const creaciones = await prisma.creaciones.findMany({

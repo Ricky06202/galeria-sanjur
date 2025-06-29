@@ -1,4 +1,4 @@
-import prisma from '@/modules/db/prisma'
+import prisma from "@/modules/shared/lib/prisma"
 import { getIdFromRequest } from '@/modules/shared/logic/getIdFromRequest'
 
 export async function GET(
