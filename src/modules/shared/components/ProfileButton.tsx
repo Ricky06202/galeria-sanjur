@@ -1,3 +1,5 @@
+"use server"
+
 import React from 'react'
 import { Button } from './ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
@@ -10,6 +12,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SignOutDropdownMenuItem from './SignOutDropdownMenuItem'
 import SignInDropdownMenuItem from './SignInDropdownMenuItem'
 import { auth } from '@/modules/shared/lib/auth'
+
 
 export default async function ProfileButton() {
   const session = await auth()
