@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs'
 
 export async function signInAction(values: z.infer<typeof signInSchema>): Promise<{ success: boolean; error: string }> {
   try {
-    const user = await signIn('credentials', {
+    await signIn('credentials', {
       email: values.email,
       password: values.password,
       redirect: false,
@@ -28,7 +28,6 @@ export async function registerAction(values: z.infer<typeof registerSchema>): Pr
     if (!success) {
       return { success: false, error: "Invalid data" }
     }
-    console.log("data", data)
 
     const userExists = await prisma.user.findUnique({
       where: {
@@ -38,25 +37,22 @@ export async function registerAction(values: z.infer<typeof registerSchema>): Pr
     if (userExists) {
       return { success: false, error: "Email already exists" }
     }
-    console.log("userExists", userExists)
 
     const hashedPassword = await bcrypt.hash(data.password, 10)
 
-    const userCreated = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
         password: hashedPassword,
       },
     })
-    console.log("userCreated", userCreated)
 
-    const user = await signIn('credentials', {
+    await signIn('credentials', {
       email: values.email,
       password: values.password,
       redirect: false,
     })
-    console.log("user", user)
     return { success: true, error: "" }
   } catch (error) {
     if (error instanceof AuthError) {

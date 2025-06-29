@@ -116,6 +116,7 @@ export default function RegisterForm() {
         variant="ghost"
         className="w-full"
         onClick={() => signIn('google', { callbackUrl: '/medallas'})}
+        disabled={isPending}
       >
         Registrate con Google <GoogleIcon />
       </Button>
