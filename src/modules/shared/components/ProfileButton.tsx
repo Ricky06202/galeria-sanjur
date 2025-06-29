@@ -1,5 +1,3 @@
-"use server"
-
 import React from 'react'
 import { Button } from './ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
@@ -11,12 +9,12 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SignOutDropdownMenuItem from './SignOutDropdownMenuItem'
 import SignInDropdownMenuItem from './SignInDropdownMenuItem'
-import { auth } from '@/modules/shared/lib/auth'
+import { useSession } from 'next-auth/react'
 
 
-export default async function ProfileButton() {
-  const session = await auth()
-  const isLoggedIn = session?.user ? true : false
+export default function ProfileButton() {
+  const session = useSession()
+  const isLoggedIn = !!session?.data
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -25,15 +23,15 @@ export default async function ProfileButton() {
             <>
               <Avatar>
                 <AvatarFallback>
-                  {session?.user?.name?.charAt(0)}
+                  {session?.data?.user?.name?.charAt(0)}
                 </AvatarFallback>
-                <AvatarImage src={session?.user?.image || ''} />
+                <AvatarImage src={session?.data?.user?.image || ''} />
               </Avatar>
             </>
           ) : (
             <AccountCircleIcon />
           )}
-          {session?.user?.name || 'Usuario'}
+          {session?.data?.user?.name || 'Usuario'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
