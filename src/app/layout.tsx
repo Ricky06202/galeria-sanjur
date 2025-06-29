@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: 'Medallas Sanjur',
@@ -14,9 +15,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="flex flex-col w-full min-h-screen scroll-smooth bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
-        <div className="w-full max-w-7xl mx-auto">
-          {children}
-        </div>
+        <SessionProvider>
+          <div className="w-full max-w-7xl mx-auto">
+            {children}
+          </div>
+        </SessionProvider>
       </body>
     </html>
   )

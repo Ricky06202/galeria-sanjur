@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react'
 
 export default function ProfileButton() {
   const session = useSession()  
-  const isLoggedIn = !!session?.data
+  const isLoggedIn = !!session?.data?.user
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
