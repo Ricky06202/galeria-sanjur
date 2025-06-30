@@ -60,9 +60,9 @@ export default function ContactoPage() {
       <section className="w-[80%] h-[30rem] rounded-2xl overflow-hidden">
         <Map />
       </section>
-      <section>
+      <section className="w-[80%] h-[10rem]">
         <ul className="flex gap-4 items-center justify-center">
-          <a href="https://www.instagram.com/medallassanjur/">
+          <a href="https://www.instagram.com/medallassanjur/" target="_blank">
             <InstagramIcon className="w-10 h-10" />
           </a>
           <Popover>
