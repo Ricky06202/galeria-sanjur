@@ -9,16 +9,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/modules/shared/components/ui/popover'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/modules/shared/components/ui/alert-dialog'
 
 const TopografiaIcon = new Icon({
   iconUrl:
