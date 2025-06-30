@@ -16,9 +16,7 @@ export default function RootLayout({
     <html lang="es">
       <body className="flex flex-col w-full min-h-screen scroll-smooth bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
         <SessionProvider>
-          <div className="w-full max-w-7xl mx-auto">
-            {children}
-          </div>
+          <div className="w-full max-w-7xl mx-auto">{children}</div>
         </SessionProvider>
       </body>
     </html>

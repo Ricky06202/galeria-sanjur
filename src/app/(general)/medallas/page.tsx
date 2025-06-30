@@ -5,6 +5,7 @@ import { useCategoriasStore } from '@/modules/medallas/stores/categoriasStore'
 import { useCreacionesStore } from '@/modules/medallas/stores/creacionesStore'
 import { Dropdown } from '@/modules/shared/components/Dropdown'
 import { SearchBar } from '@/modules/shared/components/SearchBar'
+import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
@@ -40,6 +41,9 @@ export default function MedallasPage() {
     redirect('/medallas/nueva')
   }
 
+  const session = useSession()
+  const isAdmin = session?.data?.user?.role === 'admin'
+
   return (
     <>
       <div className="flex flex-wrap md:flex-nowrap justify-center items-center p-4 bg-white dark:bg-gray-800 gap-4 max-w-md mx-auto md:max-w-3xl lg:max-w-5xl">
@@ -60,12 +64,14 @@ export default function MedallasPage() {
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
         />
-        <button
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          onClick={redirigirPagina}
-        >
-          Añadir
-        </button>
+        {isAdmin && (
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+            onClick={redirigirPagina}
+          >
+            Añadir
+          </button>
+        )}
       </div>
       {medallas.length > 0 ? (
         <ListMedallas medallas={medallas} />

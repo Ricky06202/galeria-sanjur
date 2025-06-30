@@ -1,7 +1,9 @@
+"use client"
 import { Card } from '@/modules/shared/components/Card'
 import { Tag } from '@/modules/shared/components/Tag'
 import { Color } from '@/modules/shared/constants/creacionType'
 import { getAppropriateTextColor } from '@/modules/shared/logic/colorContrast'
+import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { FC } from 'react'
 interface IColoresCardProps {
@@ -29,13 +31,18 @@ export const ColoresCard: FC<IColoresCardProps> = ({
       method: 'DELETE',
     })
   }
+
+  const session = useSession()
+  const isAdmin = session?.data?.user?.role === 'admin'
+
   return (
     <Card
       imagen={imagen}
       alt={nombre}
       titulo={nombre}
-      onClickEditar={editarFilamento}
-      onClickEliminar={eliminarFilamento}
+      onClickEditar={() => isAdmin && editarFilamento()}
+      onClickEliminar={() => isAdmin && eliminarFilamento()}
+      isAdmin={isAdmin}
     >
       <ul className="grid grid-cols-2 grid-rows-2">
         <li className="flex justify-center items-center text-center">
