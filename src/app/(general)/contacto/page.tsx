@@ -2,28 +2,53 @@
 import { InstagramIcon } from '@/modules/shared/components/icons/InstagramIcon'
 import { WhatsappIcon } from '@/modules/shared/components/icons/WhatsappIcon'
 import { GmailIcon } from '@/modules/shared/components/icons/GmailIcon'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useState, useEffect } from 'react'
+import { useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/modules/shared/components/ui/popover'
 
-const TopografiaIcon = new Icon({
-  iconUrl:
-    'https://www.ricardosanjur.com/wp-content/uploads/2025/02/logo-sin-fondopng-con-www.png',
-  iconSize: [38, 30],
-})
-
 export default function ContactoPage() {
-  const [isClient, setIsClient] = useState(false)
+  const Map = useMemo(
+    () =>
+      dynamic(
+        () => {
+          return Promise.all([
+            import('react-leaflet'),
+            import('leaflet'),
+          ]).then(([{ MapContainer, TileLayer, Marker, Popup }, leaflet]) => {
+            const TopografiaIcon = new leaflet.Icon({
+              iconUrl:
+                'https://www.ricardosanjur.com/wp-content/uploads/2025/02/logo-sin-fondopng-con-www.png',
+              iconSize: [38, 30],
+            })
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
+            // eslint-disable-next-line react/display-name
+            return () => (
+              <MapContainer
+                center={[8.42709, -82.429592]}
+                zoom={14}
+                scrollWheelZoom={false}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[8.42709, -82.429592]} icon={TopografiaIcon}>
+                  <Popup>Topografía Especializada S.A.</Popup>
+                </Marker>
+              </MapContainer>
+            )
+          })
+        },
+        { ssr: false, loading: () => <p>Cargando mapa...</p> }
+      ),
+    []
+  )
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
@@ -33,21 +58,7 @@ export default function ContactoPage() {
   return (
     <div className="flex flex-col items-center grid-rows-3 w-full gap-4">
       <section className="w-[80%] h-[30rem] rounded-2xl overflow-hidden">
-        {isClient && (
-          <MapContainer
-            center={[8.42709, -82.429592]}
-            zoom={14}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[8.42709, -82.429592]} icon={TopografiaIcon}>
-              <Popup>Topografía Especializada S.A.</Popup>
-            </Marker>
-          </MapContainer>
-        )}
+        <Map />
       </section>
       <section>
         <ul className="flex gap-4 items-center justify-center">
