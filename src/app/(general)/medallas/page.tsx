@@ -76,8 +76,8 @@ export default function MedallasPage() {
       {medallas.length > 0 ? (
         <ListMedallas medallas={medallas} />
       ) : (
-        <div className="flex justify-center items-center mt-10">
-          <p>No hay medallas disponibles</p>
+        <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+          No se encontraron medallas con los criterios seleccionados.
         </div>
       )}
     </>

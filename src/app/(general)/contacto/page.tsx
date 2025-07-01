@@ -56,7 +56,7 @@ export default function ContactoPage() {
   }
 
   return (
-    <div className="flex flex-col items-center grid-rows-3 w-full gap-4">
+    <div className="flex flex-col items-center grid-rows-3 w-full gap-4 lg:h-screen justify-center">
       <section className="w-[80%] h-[30rem] rounded-2xl overflow-hidden">
         <Map />
       </section>

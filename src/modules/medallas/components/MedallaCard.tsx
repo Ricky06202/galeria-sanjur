@@ -1,11 +1,11 @@
 "use client"
 import { FC } from 'react'
-import { Tag } from '../../shared/components/Tag'
 import { Color } from '@/modules/shared/constants/creacionType'
 import { parseTime } from '@/modules/shared/logic/parseTime'
 import { Card } from '@/modules/shared/components/Card'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { Badge } from '@/modules/shared/components/ui/badge'
 interface IMedallaCardProps {
   id: number
   nombre: string
@@ -27,12 +27,16 @@ export const MedallaCard: FC<IMedallaCardProps> = ({
 }) => {
 
   const redirigirPagina = () => {
-    redirect(`/medallas/${id}`)
+    redirect(`/medallas/editar/${id}`)
   }
   const eliminarCreacion = () => {
     fetch(`/api/creaciones/${id}`, {
       method: 'DELETE'
     })
+  }
+
+  const verDetalles = () => {
+    redirect(`/medallas/${id}`)
   }
 
   const session = useSession()
@@ -45,20 +49,21 @@ export const MedallaCard: FC<IMedallaCardProps> = ({
       titulo={nombre}
       onClickEditar={() => isAdmin && redirigirPagina()}
       onClickEliminar={() => isAdmin && eliminarCreacion()}
+      onClickVerDetalles={verDetalles}
       isAdmin={isAdmin}
     >
       <ul className="grid grid-cols-2 grid-rows-2">
-        <li className="flex justify-center items-center text-center gap-1">
+        <li className="flex justify-center items-center text-center gap-1 h-10">
           {colores.map((color, index) => (
-            <div
+            <Badge
               key={index}
               style={{ backgroundColor: color.valor_hex }}
-              className="border-2 w-3 h-3 border-gray-700 rounded-full"
+              className="border w-3 h-3 border-black"
             />
           ))}
         </li>
         <li className="flex justify-center items-center">
-          <Tag className="bg-blue-800 text-white">{categoria}</Tag>
+          <Badge className='text-wrap! text-center'>{categoria}</Badge>
         </li>
         <li className="flex justify-center items-center">
           <div>{parseTime(duracion)}</div>

@@ -1,6 +1,7 @@
 export type Creacion = {
     id: number
     nombre: string
+    descripcion: string
     imagen: string
     precio: number
     duracion: number

@@ -5,6 +5,7 @@ export const parseCreacion = (creacion: any): Creacion => {
   return {
     id: creacion.id,
     nombre: creacion.nombre,
+    descripcion: creacion.descripcion,
     imagen: creacion.imagen,
     precio: creacion.precio,
     duracion: creacion.duracion,

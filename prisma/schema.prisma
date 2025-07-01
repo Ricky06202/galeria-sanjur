@@ -11,6 +11,7 @@ datasource db {
 model Creaciones {
   id                    Int                     @id @default(autoincrement())
   nombre                String                  @unique
+  descripcion           String
   imagen                String                  @db.Text
   duracion              Int
   precio                Float

@@ -42,6 +42,7 @@ export async function POST(request: Request) {
   const creacion = await prisma.creaciones.create({
     data: {
       nombre: data.nombre,
+      descripcion: data.descripcion,
       imagen: data.imagen,
       duracion: data.duracion,
       precio: data.precio,

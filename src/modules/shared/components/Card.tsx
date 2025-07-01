@@ -8,6 +8,7 @@ interface ICardProps {
   isAdmin?: boolean
   onClickEditar: () => void
   onClickEliminar: () => void
+  onClickVerDetalles: () => void
 }
 
 export const Card: FC<ICardProps> = ({
@@ -18,14 +19,25 @@ export const Card: FC<ICardProps> = ({
   isAdmin = true,
   onClickEditar,
   onClickEliminar,
+  onClickVerDetalles,
 }) => {
   return (
     <div className="w-60 rounded-xl overflow-hidden relative shadow-lg group ">
       <div className="bg-gray-200 dark:bg-gray-700">
-        <img className="w-full h-40 object-cover" src={imagen} alt={alt} />
+        <img
+          className="w-full h-40 object-cover cursor-pointer hover:opacity-75 transition-opacity duration-200"
+          onClick={onClickVerDetalles}
+          src={imagen}
+          alt={alt}
+        />
       </div>
       <div className="flex flex-col items-center p-3 h-full bg-gray-300 dark:bg-gray-900">
-        <h2 className="text-lg font-bold mb-2">{titulo}</h2>
+        <h2
+          onClick={onClickVerDetalles}
+          className="text-lg text-center font-bold mb-2 cursor-pointer hover:underline transition-colors duration-200 hover:text-blue-500"
+        >
+          {titulo}
+        </h2>
         {children}
       </div>
       {/* Overlay for admin users */}
@@ -37,6 +49,12 @@ export const Card: FC<ICardProps> = ({
               onClick={onClickEditar}
             >
               Editar
+            </button>
+            <button
+              className="bg-gray-500 hover:bg-gray-600 text-white w-30 px-4 py-2  rounded cursor-pointer"
+              onClick={onClickVerDetalles}
+            >
+              Ver Detalles
             </button>
             <button
               className="bg-red-500 hover:bg-red-600 text-white w-30 px-4 py-2  rounded cursor-pointer"

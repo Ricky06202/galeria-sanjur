@@ -12,6 +12,7 @@ export async function GET(
     select: {
       id: true,
       nombre: true,
+      descripcion: true,
       imagen: true,
       duracion: true,
       precio: true,
@@ -58,6 +59,7 @@ export async function PUT(
     where: { id: parseInt(id) },
     data: {
       nombre: data.nombre,
+      descripcion: data.descripcion,
       imagen: data.imagen,
       duracion: data.duracion,
       precio: data.precio,
