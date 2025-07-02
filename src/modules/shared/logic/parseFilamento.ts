@@ -1,6 +1,5 @@
 import { Filamento } from "../constants/filamentoType";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function parseFilamento(filamento: any): Filamento {
   return {
     id: filamento.id,

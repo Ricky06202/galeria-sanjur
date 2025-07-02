@@ -6,6 +6,7 @@ import { getAppropriateTextColor } from '@/modules/shared/logic/colorContrast'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { FC } from 'react'
+import { useFilamentosStore } from '../stores/filamentosStore'
 interface IColoresCardProps {
   id: number
   nombre: string
@@ -13,6 +14,7 @@ interface IColoresCardProps {
   color: Color
   marca: string
   cantidad: number
+  isDeleteDisabled?: boolean
 }
 
 export const ColoresCard: FC<IColoresCardProps> = ({
@@ -22,14 +24,16 @@ export const ColoresCard: FC<IColoresCardProps> = ({
   color,
   marca,
   cantidad,
+  isDeleteDisabled = false,
 }) => {
+
+  const deleteFilamento = useFilamentosStore((state) => state.deleteFilamento)
+  
   const editarFilamento = () => {
     redirect(`/colores/editar/${id}`)
   }
   const eliminarFilamento = () => {
-    fetch(`/api/filamentos/${id}`, {
-      method: 'DELETE',
-    })
+    deleteFilamento(id)
   }
 
   const verDetalles = () => {
@@ -48,6 +52,7 @@ export const ColoresCard: FC<IColoresCardProps> = ({
       onClickEliminar={() => isAdmin && eliminarFilamento()}
       onClickVerDetalles={verDetalles}
       isAdmin={isAdmin}
+      isDeleteDisabled={isDeleteDisabled}
     >
       <ul className="grid grid-cols-2 grid-rows-2">
         <li className="flex justify-center items-center text-center">

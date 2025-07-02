@@ -6,6 +6,7 @@ type CreacionesStore = {
   creaciones: Creacion[]
   creacionesFiltradas: Creacion[]
   fetchCreaciones: () => void
+  deleteCreacion: (id: number) => void
   filtrarBusqueda: (busqueda: string) => void
   filtrarCategoria: (categoria: string) => void
   filtrarPrecio: (precio: string) => void
@@ -19,15 +20,25 @@ export const useCreacionesStore = create<CreacionesStore>()((set) => ({
   fetchCreaciones: () => {
     fetch('/api/creaciones')
       .then((response) => response.json())
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((data: any) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const nuevasMedallas: Creacion[] = data.map((medalla: any) =>
           parseCreacion(medalla)
         )
         set({ creaciones: nuevasMedallas })
         set({ creacionesFiltradas: [...nuevasMedallas] })
       })
+  },
+
+  deleteCreacion: (id) => {
+    fetch(`/api/creaciones/${id}`, {
+      method: 'DELETE',
+    })
+    set((state) => ({
+      creaciones: state.creaciones.filter((medalla) => medalla.id !== id),
+      creacionesFiltradas: state.creacionesFiltradas.filter(
+        (medalla) => medalla.id !== id
+      ),
+    }))
   },
 
   filtrarBusqueda: (busqueda) => {

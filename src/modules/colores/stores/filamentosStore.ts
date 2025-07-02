@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Filamento } from '@/modules/shared/constants/filamentoType'
 import { parseFilamento } from '@/modules/shared/logic/parseFilamento'
 import { create } from 'zustand'
@@ -7,6 +6,7 @@ type filamentosStore = {
   filamentos: Filamento[]
   filamentosFiltrados: Filamento[]
   fetchFilamentos: () => void
+  deleteFilamento: (id: number) => void
   filtrarBusqueda: (busqueda: string) => void
   filtrarColor: (color: string) => void
   filtrarDisponibilidad: (disponibilidad: string) => void
@@ -26,6 +26,18 @@ export const useFilamentosStore = create<filamentosStore>()((set) => ({
         set({ filamentos: nuevosColores })
         set({ filamentosFiltrados: [...nuevosColores] })
       })
+  },
+
+  deleteFilamento: (id) => {
+    fetch(`/api/filamentos/${id}`, {
+      method: 'DELETE',
+    })
+    set((state) => ({
+      filamentos: state.filamentos.filter((filamento) => filamento.id !== id),
+      filamentosFiltrados: state.filamentosFiltrados.filter(
+        (filamento) => filamento.id !== id
+      ),
+    }))
   },
 
   filtrarBusqueda: (busqueda) => {

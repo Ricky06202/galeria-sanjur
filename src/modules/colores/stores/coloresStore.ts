@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Color } from '@/modules/shared/constants/creacionType'
 import { parseColor } from '@/modules/shared/logic/parseColor'
 import { create } from 'zustand'

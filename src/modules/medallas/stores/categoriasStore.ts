@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Categoria } from '@/modules/shared/constants/creacionType'
 import { parseCategoria } from '@/modules/shared/logic/parseCategoria'
 import { create } from 'zustand'

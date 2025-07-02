@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-// components/ImageUploadInput.js
 'use client';
 
 import React, { ChangeEvent, useRef } from 'react';

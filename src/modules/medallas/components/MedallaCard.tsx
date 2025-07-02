@@ -6,6 +6,7 @@ import { Card } from '@/modules/shared/components/Card'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Badge } from '@/modules/shared/components/ui/badge'
+import { useCreacionesStore } from '../stores/creacionesStore'
 interface IMedallaCardProps {
   id: number
   nombre: string
@@ -14,6 +15,7 @@ interface IMedallaCardProps {
   categoria: string
   duracion: number
   precio: number
+  isDeleteDisabled?: boolean
 }
 
 export const MedallaCard: FC<IMedallaCardProps> = ({
@@ -24,15 +26,16 @@ export const MedallaCard: FC<IMedallaCardProps> = ({
   categoria,
   duracion,
   precio,
+  isDeleteDisabled = false
 }) => {
+
+  const deleteCreacion = useCreacionesStore((state) => state.deleteCreacion)
 
   const redirigirPagina = () => {
     redirect(`/medallas/editar/${id}`)
   }
   const eliminarCreacion = () => {
-    fetch(`/api/creaciones/${id}`, {
-      method: 'DELETE'
-    })
+    deleteCreacion(id)
   }
 
   const verDetalles = () => {
@@ -51,6 +54,7 @@ export const MedallaCard: FC<IMedallaCardProps> = ({
       onClickEliminar={() => isAdmin && eliminarCreacion()}
       onClickVerDetalles={verDetalles}
       isAdmin={isAdmin}
+      isDeleteDisabled={isDeleteDisabled}
     >
       <ul className="grid grid-cols-2 grid-rows-2">
         <li className="flex justify-center items-center text-center gap-1 h-10">

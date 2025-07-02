@@ -1,5 +1,4 @@
 'use client'
-/* eslint-disable react-hooks/exhaustive-deps */
 import { ListColores } from '@/modules/colores/components/ListColores'
 import { useColoresStore } from '@/modules/colores/stores/coloresStore'
 import { useFilamentosStore } from '@/modules/colores/stores/filamentosStore'

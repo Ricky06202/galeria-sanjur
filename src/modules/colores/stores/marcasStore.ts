@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Marca } from '@/modules/shared/constants/filamentoType'
 import { parseMarca } from '@/modules/shared/logic/parseMarca'
 import { create } from 'zustand'

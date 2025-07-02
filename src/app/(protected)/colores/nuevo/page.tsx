@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client' // Indica que este es un Client Component
 
 import { useColoresStore } from '@/modules/colores/stores/coloresStore'

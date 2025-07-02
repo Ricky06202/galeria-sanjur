@@ -26,8 +26,7 @@ export default function ContactoPage() {
               iconSize: [38, 30],
             })
 
-            // eslint-disable-next-line react/display-name
-            return () => (
+            const DynamicMap = () => (
               <MapContainer
                 center={[8.42709, -82.429592]}
                 zoom={14}
@@ -43,6 +42,9 @@ export default function ContactoPage() {
                 </Marker>
               </MapContainer>
             )
+
+            DynamicMap.displayName = 'DynamicMap'
+            return DynamicMap
           })
         },
         { ssr: false, loading: () => <p>Cargando mapa...</p> }

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { ListMedallas } from '@/modules/medallas/components/ListMedallas'
 import { useCategoriasStore } from '@/modules/medallas/stores/categoriasStore'

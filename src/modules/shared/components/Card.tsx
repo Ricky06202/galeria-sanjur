@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { FC } from 'react'
 interface ICardProps {
   children?: React.ReactNode
@@ -9,6 +8,7 @@ interface ICardProps {
   onClickEditar: () => void
   onClickEliminar: () => void
   onClickVerDetalles: () => void
+  isDeleteDisabled?: boolean
 }
 
 export const Card: FC<ICardProps> = ({
@@ -16,14 +16,16 @@ export const Card: FC<ICardProps> = ({
   imagen,
   alt,
   titulo,
-  isAdmin = true,
+  isAdmin = false,
   onClickEditar,
   onClickEliminar,
   onClickVerDetalles,
+  isDeleteDisabled = false,
 }) => {
+
   return (
     <div className="w-60 rounded-xl overflow-hidden relative shadow-lg group ">
-      <div className="bg-gray-200 dark:bg-gray-700">
+      <div className="bg-gray-50 dark:bg-gray-700">
         <img
           className="w-full h-40 object-cover cursor-pointer hover:opacity-75 transition-opacity duration-200"
           onClick={onClickVerDetalles}
@@ -31,7 +33,7 @@ export const Card: FC<ICardProps> = ({
           alt={alt}
         />
       </div>
-      <div className="flex flex-col items-center p-3 h-full bg-gray-300 dark:bg-gray-900">
+      <div className="flex flex-col items-center p-3 h-full bg-gray-100 dark:bg-gray-900">
         <h2
           onClick={onClickVerDetalles}
           className="text-lg text-center font-bold mb-2 cursor-pointer hover:underline transition-colors duration-200 hover:text-blue-500"
@@ -56,12 +58,14 @@ export const Card: FC<ICardProps> = ({
             >
               Ver Detalles
             </button>
-            <button
-              className="bg-red-500 hover:bg-red-600 text-white w-30 px-4 py-2  rounded cursor-pointer"
-              onClick={onClickEliminar}
-            >
-              Eliminar
-            </button>
+            {!isDeleteDisabled && (
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white w-30 px-4 py-2  rounded cursor-pointer"
+                onClick={onClickEliminar}
+              >
+                Eliminar
+              </button>
+            )}
           </div>
         </div>
       )}
