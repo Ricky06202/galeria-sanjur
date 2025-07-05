@@ -18,6 +18,14 @@ model Creaciones {
   categoria_id          Int?
   Categoria             Categoria?              @relation(fields: [categoria_id], references: [id], onDelete: SetNull)
   Creaciones_Filamentos Creaciones_Filamentos[]
+  Galeria_Creaciones    Galeria_Creaciones[]
+}
+
+model Galeria_Creaciones {
+  id            Int        @id @default(autoincrement())
+  creaciones_id Int
+  imagen        String     @db.Text
+  creaciones    Creaciones @relation(fields: [creaciones_id], references: [id], onDelete: Cascade)
 }
 
 model Categoria {

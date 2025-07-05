@@ -5,7 +5,7 @@ import React, { ChangeEvent, useRef } from 'react';
 interface ImageUploadInputProps {
   label: string;
   name: string;
-  value: File | null;
+  value: File | string | null;
   onFileSelect: (e: ChangeEvent<HTMLInputElement>) => void;
   onClear?: () => void;
   accept?: string;
@@ -64,24 +64,31 @@ export default function ImageUploadInput({
           onChange={handleFileChange}
           className="absolute inset-0 w-full h-full opacity-0 pointer-events-none" // pointer-events-none evita doble apertura
         />
-        {value ? ( // 'value' es el objeto File pasado como prop
-          <div className="flex flex-col items-center">
-            <img
-              src={URL.createObjectURL(value)} // Crea URL para la vista previa
-              alt="Vista previa de la imagen"
-              className="max-w-full h-32 object-contain rounded-md mb-3 shadow-md"
-            />
-            <p className="text-sm text-gray-600 truncate w-full px-2">{value.name}</p>
-            <button
-              type="button"
-              onClick={handleClearImage}
-              className="mt-2 text-red-600 hover:text-red-800 text-sm font-medium"
-            >
-              Quitar imagen
-            </button>
-          </div>
+        {value ? ( // 'value' puede ser un objeto File o una URL string
+          (() => {
+            const imageSrc = typeof value === 'string' ? value : URL.createObjectURL(value);
+            const imageName = typeof value === 'string' ? 'Imagen actual' : value.name;
+
+            return (
+              <div className="flex flex-col items-center">
+                <img
+                  src={imageSrc} // Usa la URL directa o la creada para la vista previa
+                  alt="Vista previa de la imagen"
+                  className="max-w-full h-32 object-contain rounded-md mb-3 shadow-md"
+                />
+                <p className="text-sm text-gray-600 truncate w-full px-2">{imageName}</p>
+                <button
+                  type="button"
+                  onClick={handleClearImage}
+                  className="mt-2 text-red-600 hover:text-red-800 text-sm font-medium"
+                >
+                  Quitar imagen
+                </button>
+              </div>
+            );
+          })()
         ) : (
-          <div className="flex flex-col items-center text-gray-500">
+          <div className="flex flex-col items-center justify-center text-center p-4 border-2 border-dashed border-gray-300 rounded-lg h-48">
             <svg className="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
             </svg>

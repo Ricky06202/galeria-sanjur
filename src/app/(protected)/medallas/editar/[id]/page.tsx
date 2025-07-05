@@ -1,6 +1,9 @@
 'use client' // Indica que este es un Client Component
 
-import { base64ToFile, fileToBase64 } from '@/modules/shared/logic/convertImageToBase64'
+import {
+  base64ToFile,
+  fileToBase64,
+} from '@/modules/shared/logic/convertImageToBase64'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useFilamentosStore } from '@/modules/colores/stores/filamentosStore'
@@ -9,6 +12,7 @@ import ImageUploadInput from '@/modules/shared/components/ImageUploadInput'
 import NumberInput from '@/modules/shared/components/NumberInput'
 import SelectInput from '@/modules/shared/components/SelectInput'
 import TextInput from '@/modules/shared/components/TextInput'
+import { useGaleriaStore } from '@/modules/medallas/stores/galeriaStore'
 
 export default function EditarMedalla() {
   const { id } = useParams()
@@ -25,6 +29,71 @@ export default function EditarMedalla() {
       imagen: null, // Establece la imagen a null
     }))
   }
+
+  const galeria = useGaleriaStore((state) => state.galeria)
+  const fetchGaleria = useGaleriaStore((state) => state.fetchGaleria)
+
+  useEffect(() => {
+    fetchGaleria(id!.toString())
+  }, [])
+
+  const handleImageFileSelectGaleria = (e: ChangeEvent<HTMLInputElement>) => {
+    setNuevaGaleria((prevData) => ({
+      ...prevData,
+      imagen: e.target.files?.[0] || null, // e.target.files[0] contiene el File object
+    }))
+  }
+
+  const handleImageClearGaleria = () => {
+    setNuevaGaleria((prevData) => ({
+      ...prevData,
+      imagen: null, // Establece la imagen a null
+    }))
+  }
+
+  const handleImageFileSelectEditarGaleria = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    setEditarGaleria((prevData) => ({
+      ...prevData,
+      imagen: e.target.files?.[0] || null, // e.target.files[0] contiene el File object
+    }))
+  }
+
+  const handleImageClearEditarGaleria = () => {
+    setEditarGaleria((prevData) => ({
+      ...prevData,
+      imagen: null, // Establece la imagen a null
+    }))
+  }
+
+  const [nuevaGaleria, setNuevaGaleria] = useState({
+    imagen: null as File | null,
+  })
+
+  const [editarGaleria, setEditarGaleria] = useState({
+    id: '',
+    imagen: null as File | null,
+  })
+
+  useEffect(() => {
+    // buscar la imagen
+    const imagen = galeria.find(
+      (galeria) => galeria.id === parseInt(editarGaleria.id)
+    )
+    if (!imagen) return
+    let fileImage = null
+    try {
+      fileImage = base64ToFile(imagen.imagen, 'Imagen #' + imagen.id)
+    } catch (error) {
+      console.error('Error al convertir la imagen:', error)
+    }
+    setEditarGaleria((prevData) => ({
+      ...prevData,
+      imagen: fileImage,
+    }))
+  }, [editarGaleria.id])
+
   // 1 Crear Estados para los campos del formulario
   const [nuevaCreacion, setNuevaCreacion] = useState({
     nombre: '',
@@ -41,7 +110,7 @@ export default function EditarMedalla() {
   // 2 Crear Funciones para manejar cambios de los campos
   const manejarCambios = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    seccion: 'creacion' | 'filamento'
+    seccion: 'creacion' | 'filamento' | 'galeria'
   ) => {
     const { name, value, type } = e.target
     const files = (e.target as HTMLInputElement).files
@@ -54,6 +123,9 @@ export default function EditarMedalla() {
         break
       case 'filamento':
         setNuevoFilamentoUsado((prev) => ({ ...prev, [name]: value }))
+        break
+      case 'galeria':
+        setEditarGaleria((prev) => ({ ...prev, [name]: value }))
         break
       default:
         break
@@ -146,6 +218,76 @@ export default function EditarMedalla() {
     }
   }
 
+  const manejarEnvioGaleriaAgregar = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!nuevaGaleria.imagen) {
+      alert('Por favor, completa todos los campos correctamente.')
+      return
+    }
+    const imagenBase64 = await fileToBase64(nuevaGaleria.imagen)
+    const formData = {
+      imagen: imagenBase64,
+    }
+    try {
+      const response = await fetch(`/api/galeria_creaciones/${id}`, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+
+      // const data = await response.json()
+      console.log('Galeria agregada exitosamente')
+      alert('Galeria agregada exitosamente')
+    } catch (error) {
+      console.error('Error al agregar la galeria:', error)
+      alert(
+        'Hubo un error al agregar la galeria. Por favor, inténtalo de nuevo.'
+      )
+    }
+  }
+
+  const manejarEnvioGaleriaEditar = async () => {
+    if (!editarGaleria.imagen || !editarGaleria.id) {
+      alert('Por favor, completa todos los campos correctamente.')
+      return
+    }
+    const imagenBase64 = await fileToBase64(editarGaleria.imagen)
+    const formData = {
+      imagen: imagenBase64,
+    }
+    try {
+      const response = await fetch(
+        `/api/galeria_creaciones/${editarGaleria.id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(formData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+
+      // const data = await response.json()
+      console.log('Galeria editada exitosamente')
+      alert('Galeria editada exitosamente')
+    } catch (error) {
+      console.error('Error al editar la galeria:', error)
+      alert(
+        'Hubo un error al editar la galeria. Por favor, inténtalo de nuevo.'
+      )
+    }
+  }
+
   const filamentos = useFilamentosStore((state) => state.filamentos)
   const fetchFilamentos = useFilamentosStore((state) => state.fetchFilamentos)
   const categorias = useCategoriasStore((state) => state.categorias)
@@ -172,7 +314,7 @@ export default function EditarMedalla() {
     setNuevaCreacion({
       nombre: data.nombre,
       imagen: fileImage,
-      duracionHoras: (Math.trunc(data.duracion / 60)).toString(),
+      duracionHoras: Math.trunc(data.duracion / 60).toString(),
       duracionMinutos: (data.duracion % 60).toString(),
       precio: data.precio.toString(),
       categoria: data.Categoria.id.toString(),
@@ -316,6 +458,118 @@ export default function EditarMedalla() {
               className="bg-purple-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-purple-800 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300 focus:ring-offset-2"
             >
               Agregar Filamento Usado
+            </button>
+          </form>
+        </section>
+
+        {/** Section: Añadir Imagenes */}
+        {/* Sección: Añadir Imagenes */}
+        <section
+          id="Imagenes"
+          className="bg-gradient-to-br from-yellow-50 to-gray-50 p-8 rounded-xl shadow-lg border border-yellow-100 transition-all duration-300 hover:shadow-2xl"
+        >
+          <h2 className="text-4xl font-extrabold text-center text-yellow-900 mb-8 tracking-tight">
+            Agregar Imagen a la Galeria
+          </h2>
+          <form
+            className="flex flex-col items-center justify-center space-y-7"
+            onSubmit={manejarEnvioGaleriaAgregar}
+          >
+            {/* Campo: Elija la Creación 3D Correspondiente */}
+            <SelectInput
+              label="Elija la Creación 3D Correspondiente"
+              name="creacion"
+              value={creacion.id.toString()}
+              onChange={(e) => {}}
+              options={[
+                {
+                  value: creacion.id.toString(),
+                  label: creacion.nombre,
+                },
+              ]}
+              placeholder="Selecciona una creación 3D"
+              disabled
+            />
+
+            {/* Campo: Imagen */}
+            <ImageUploadInput
+              label="Imagen"
+              name="imagen"
+              value={nuevaGaleria.imagen}
+              accept="image/*"
+              onFileSelect={handleImageFileSelectGaleria}
+              onClear={handleImageClearGaleria}
+              placeholderText="Haz clic o arrastra para subir una imagen"
+              helpText="PNG, JPG, GIF hasta 5MB"
+            />
+
+            <button
+              type="submit"
+              className="bg-yellow-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-yellow-800 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:ring-offset-2"
+            >
+              Agregar Imagen
+            </button>
+          </form>
+        </section>
+
+        {/** Section: Editar Imagen Galeria */}
+        <section
+          id="Imagenes"
+          className="bg-gradient-to-br from-yellow-50 to-gray-50 p-8 rounded-xl shadow-lg border border-yellow-100 transition-all duration-300 hover:shadow-2xl"
+        >
+          <h2 className="text-4xl font-extrabold text-center text-yellow-900 mb-8 tracking-tight">
+            Editar Imagen de la Galeria
+          </h2>
+          <form
+            className="flex flex-col items-center justify-center space-y-7"
+            onSubmit={manejarEnvioGaleriaEditar}
+          >
+            {/* Campo: Elija la Creación 3D Correspondiente */}
+            <SelectInput
+              label="Elija la Creación 3D Correspondiente"
+              name="creacion"
+              value={creacion.id.toString()}
+              onChange={(e) => {}}
+              options={[
+                {
+                  value: creacion.id.toString(),
+                  label: creacion.nombre,
+                },
+              ]}
+              placeholder="Selecciona una creación 3D"
+              disabled
+            />
+
+            {/** Campo: Elija la Imagen */}
+            <SelectInput
+              label="Elija la Imagen"
+              name="id"
+              value={editarGaleria.id.toString()}
+              onChange={(e) => manejarCambios(e, 'galeria')}
+              options={galeria?.map((galeria_creacion) => ({
+                value: galeria_creacion.id.toString(),
+                label: 'Imagen #' + galeria_creacion.id,
+              }))}
+              placeholder="Selecciona una imagen"
+            />
+
+            {/* Campo: Imagen */}
+            <ImageUploadInput
+              label="Imagen"
+              name="imagen"
+              value={editarGaleria.imagen}
+              accept="image/*"
+              onFileSelect={handleImageFileSelectEditarGaleria}
+              onClear={handleImageClearEditarGaleria}
+              placeholderText="Haz clic o arrastra para subir una imagen"
+              helpText="PNG, JPG, GIF hasta 5MB"
+            />
+
+            <button
+              type="submit"
+              className="bg-yellow-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-yellow-800 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300 focus:ring-offset-2"
+            >
+              Editar Imagen
             </button>
           </form>
         </section>

@@ -19,3 +19,9 @@ export type Creacion = {
     nombre: string
     valor_hex: string
   }
+
+  export type GaleriaCreacion = {
+    id: number
+    creaciones_id: number
+    imagen: string
+  }

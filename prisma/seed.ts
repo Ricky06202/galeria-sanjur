@@ -3,6 +3,17 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  // 1. Borra todos los datos existentes y reinicia los IDs
+  console.log('Limpiando la base de datos...');
+  // Ojo: El orden importa para las relaciones. Elimina primero las tablas dependientes.
+  // O puedes listar todas las tablas en un solo comando TRUNCATE con CASCADE.
+  const tableNames = ['Galeria_Creaciones', 'Creaciones_Filamentos', 'Filamentos', 'Color', 'Marca', 'Creaciones', 'Categoria'];
+  for (const tableName of tableNames) {
+    await prisma.$queryRawUnsafe(`TRUNCATE TABLE "${tableName}" RESTART IDENTITY CASCADE;`);
+  }
+  console.log('Base de datos limpiada.\n');
+
+  // 2. Inserta los nuevos datos
   await prisma.categoria.createMany({
     data: [
       { nombre: 'Medalla conmemorativa' },
@@ -101,6 +112,31 @@ async function main() {
     skipDuplicates: true,
   })
   console.log('Creaciones insertadas');
+
+  await prisma.galeria_Creaciones.createMany({
+    data: [
+      { creaciones_id: 1, imagen: 'https://example.com/medalla-oro-1.jpg' },
+      { creaciones_id: 1, imagen: 'https://example.com/medalla-oro-2.jpg' },
+      { creaciones_id: 1, imagen: 'https://example.com/medalla-oro-3.jpg' },
+      { creaciones_id: 2, imagen: 'https://example.com/medalla-conmemorativa-1.jpg' },
+      { creaciones_id: 2, imagen: 'https://example.com/medalla-conmemorativa-2.jpg' },
+      { creaciones_id: 2, imagen: 'https://example.com/medalla-conmemorativa-3.jpg' },
+      { creaciones_id: 3, imagen: 'https://example.com/medalla-militar-1.jpg' },
+      { creaciones_id: 3, imagen: 'https://example.com/medalla-militar-2.jpg' },
+      { creaciones_id: 3, imagen: 'https://example.com/medalla-militar-3.jpg' },
+      { creaciones_id: 4, imagen: 'https://example.com/medalla-personalizada-1.jpg' },
+      { creaciones_id: 4, imagen: 'https://example.com/medalla-personalizada-2.jpg' },
+      { creaciones_id: 4, imagen: 'https://example.com/medalla-personalizada-3.jpg' },
+      { creaciones_id: 5, imagen: 'https://example.com/medalla-honor-1.jpg' },
+      { creaciones_id: 5, imagen: 'https://example.com/medalla-honor-2.jpg' },
+      { creaciones_id: 5, imagen: 'https://example.com/medalla-honor-3.jpg' },
+      { creaciones_id: 6, imagen: 'https://example.com/medalla-plata-relieve-1.jpg' },
+      { creaciones_id: 6, imagen: 'https://example.com/medalla-plata-relieve-2.jpg' },
+      { creaciones_id: 6, imagen: 'https://example.com/medalla-plata-relieve-3.jpg' },
+    ],
+    skipDuplicates: true,
+  })
+  console.log('Galeria_Creaciones insertadas');
 
   await prisma.marca.createMany({
     data: [
