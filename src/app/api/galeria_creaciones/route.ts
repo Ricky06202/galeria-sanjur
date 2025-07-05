@@ -1,6 +1,6 @@
 import prisma from '@/modules/shared/lib/prisma'
 
-export async function GET(request: Request) {
+export async function GET() {
   const galeria_creaciones = await prisma.galeria_Creaciones.findMany()
   if (!galeria_creaciones) {
     return new Response(JSON.stringify({ error: 'Galeria de creaciones no encontrada' }), {

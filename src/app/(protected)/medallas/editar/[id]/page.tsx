@@ -480,7 +480,7 @@ export default function EditarMedalla() {
               label="Elija la Creación 3D Correspondiente"
               name="creacion"
               value={creacion.id.toString()}
-              onChange={(e) => {}}
+              onChange={() => {}}
               options={[
                 {
                   value: creacion.id.toString(),
@@ -529,7 +529,7 @@ export default function EditarMedalla() {
               label="Elija la Creación 3D Correspondiente"
               name="creacion"
               value={creacion.id.toString()}
-              onChange={(e) => {}}
+              onChange={() => {}}
               options={[
                 {
                   value: creacion.id.toString(),
