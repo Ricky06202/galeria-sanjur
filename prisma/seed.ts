@@ -3,15 +3,15 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // 1. Borra todos los datos existentes y reinicia los IDs
-  console.log('Limpiando la base de datos...');
-  // Ojo: El orden importa para las relaciones. Elimina primero las tablas dependientes.
-  // O puedes listar todas las tablas en un solo comando TRUNCATE con CASCADE.
-  const tableNames = ['Galeria_Creaciones', 'Creaciones_Filamentos', 'Filamentos', 'Color', 'Marca', 'Creaciones', 'Categoria'];
-  for (const tableName of tableNames) {
-    await prisma.$queryRawUnsafe(`TRUNCATE TABLE "${tableName}" RESTART IDENTITY CASCADE;`);
-  }
-  console.log('Base de datos limpiada.\n');
+  // // 1. Borra todos los datos existentes y reinicia los IDs
+  // console.log('Limpiando la base de datos...');
+  // // Ojo: El orden importa para las relaciones. Elimina primero las tablas dependientes.
+  // // O puedes listar todas las tablas en un solo comando TRUNCATE con CASCADE.
+  // const tableNames = ['Galeria_Creaciones', 'Creaciones_Filamentos', 'Filamentos', 'Color', 'Marca', 'Creaciones', 'Categoria'];
+  // for (const tableName of tableNames) {
+  //   await prisma.$queryRawUnsafe(`TRUNCATE TABLE "${tableName}" RESTART IDENTITY CASCADE;`);
+  // }
+  // console.log('Base de datos limpiada.\n');
 
   // 2. Inserta los nuevos datos
   await prisma.categoria.createMany({
