@@ -15,6 +15,7 @@ import TextInput from '@/modules/shared/components/TextInput'
 import { useGaleriaStore } from '@/modules/medallas/stores/galeriaStore'
 import { put } from '@vercel/blob'
 import { upload } from '@vercel/blob/client'
+import { toast } from 'sonner'
 
 export default function EditarMedalla() {
   const { id } = useParams()
@@ -146,7 +147,7 @@ export default function EditarMedalla() {
       !nuevaCreacion.categoria ||
       !nuevaCreacion.descripcion
     ) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
 
@@ -182,10 +183,10 @@ export default function EditarMedalla() {
 
       // const data = await response.json()
       console.log('Creación 3D creada exitosamente')
-      alert('Creación 3D creada exitosamente')
+      toast.success('Creación 3D creada exitosamente')
     } catch (error) {
       console.error('Error al editar la creación 3D:', error)
-      alert(
+      toast.error(
         'Hubo un error al editar la creación 3D. Por favor, inténtalo de nuevo.'
       )
     }
@@ -195,7 +196,7 @@ export default function EditarMedalla() {
     e.preventDefault()
     // 1 Validar Campos
     if (!nuevoFilamentoUsado.filamentoUsado) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     // 2 Enviar Datos
@@ -217,10 +218,10 @@ export default function EditarMedalla() {
 
       // const data = await response.json()
       console.log('Filamento usado agregado exitosamente')
-      alert('Filamento usado agregado exitosamente')
+      toast.success('Filamento usado agregado exitosamente')
     } catch (error) {
       console.error('Error al agregar el filamento usado:', error)
-      alert(
+      toast.error(
         'Hubo un error al agregar el filamento usado. Por favor, inténtalo de nuevo.'
       )
     }
@@ -229,7 +230,7 @@ export default function EditarMedalla() {
   const manejarEnvioGaleriaAgregar = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!nuevaGaleria.imagen) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     const blob = await upload(creacion.nombre, nuevaGaleria.imagen, {
@@ -254,10 +255,10 @@ export default function EditarMedalla() {
 
       // const data = await response.json()
       console.log('Galeria agregada exitosamente')
-      alert('Galeria agregada exitosamente')
+      toast.success('Galeria agregada exitosamente')
     } catch (error) {
       console.error('Error al agregar la galeria:', error)
-      alert(
+      toast.error(
         'Hubo un error al agregar la galeria. Por favor, inténtalo de nuevo.'
       )
     }
@@ -265,7 +266,7 @@ export default function EditarMedalla() {
 
   const manejarEnvioGaleriaEditar = async () => {
     if (!editarGaleria.imagen || !editarGaleria.id) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     const blob = await upload(creacion.nombre, editarGaleria.imagen, {
@@ -293,10 +294,10 @@ export default function EditarMedalla() {
 
       // const data = await response.json()
       console.log('Galeria editada exitosamente')
-      alert('Galeria editada exitosamente')
+      toast.success('Galeria editada exitosamente')
     } catch (error) {
       console.error('Error al editar la galeria:', error)
-      alert(
+      toast.error(
         'Hubo un error al editar la galeria. Por favor, inténtalo de nuevo.'
       )
     }

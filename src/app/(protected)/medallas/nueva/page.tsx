@@ -12,6 +12,7 @@ import { put } from '@vercel/blob'
 import { upload } from '@vercel/blob/client';
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function NuevaMedalla() {
   const handleImageFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +85,7 @@ export default function NuevaMedalla() {
       !nuevaCreacion.categoria ||
       !nuevaCreacion.descripcion
     ) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
 
@@ -120,10 +121,10 @@ export default function NuevaMedalla() {
 
       // const data = await response.json()
       console.log('Creación 3D creada exitosamente')
-      alert('Creación 3D creada exitosamente')
+      toast.success('Creación 3D creada exitosamente')
     } catch (error) {
       console.error('Error al crear la creación 3D:', error)
-      alert(
+      toast.error(
         'Hubo un error al crear la creación 3D. Por favor, inténtalo de nuevo.'
       )
     }
@@ -133,7 +134,7 @@ export default function NuevaMedalla() {
     e.preventDefault()
     // 1 Validar Campos
     if (!nuevaCategoria.nombre.trim()) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     // 2 Enviar Datos
@@ -157,10 +158,10 @@ export default function NuevaMedalla() {
 
       // const data = await response.json()
       console.log('Categoria creada exitosamente')
-      alert('Categoria creada exitosamente')
+      toast.success('Categoria creada exitosamente')
     } catch (error) {
       console.error('Error al crear la categoria:', error)
-      alert(
+      toast.error(
         'Hubo un error al crear la categoria. Por favor, inténtalo de nuevo.'
       )
     }
@@ -173,7 +174,7 @@ export default function NuevaMedalla() {
       !nuevoFilamentoUsado.creacion3D ||
       !nuevoFilamentoUsado.filamentoUsado
     ) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     // 2 Enviar Datos
@@ -196,10 +197,10 @@ export default function NuevaMedalla() {
 
       // const data = await response.json()
       console.log('Filamento usado creado exitosamente')
-      alert('Filamento usado creado exitosamente')
+      toast.success('Filamento usado creado exitosamente')
     } catch (error) {
       console.error('Error al crear el filamento usado:', error)
-      alert(
+      toast.error(
         'Hubo un error al crear el filamento usado. Por favor, inténtalo de nuevo.'
       )
     }

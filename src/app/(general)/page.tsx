@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Page() {
   return (
     <div className="antialiased">
@@ -52,12 +54,12 @@ export default function Page() {
             En Topografía Especializada S.A., damos vida a tus proyectos con
             diseños innovadores y un compromiso firme con la sostenibilidad.
           </p>
-          <a
-            href="#creaciones"
+          <Link
+            href="/medallas"
             className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
           >
             Ver Nuestras Creaciones 3D
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -280,18 +282,18 @@ export default function Page() {
             personalizadas hasta piezas decorativas y funcionales.
           </p>
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
-            <a
-              href="#galeria"
+            <Link
+              href="/medallas"
               className="bg-white text-green-700 hover:bg-gray-100 border border-green-700 font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
             >
               Ver Creaciones 3D
-            </a>
-            <a
-              href="#contacto-footer"
+            </Link>
+            <Link
+              href="/contacto"
               className="bg-white text-green-700 hover:bg-gray-100 border border-green-700 font-semibold py-3 px-6 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
             >
               Contáctanos
-            </a>
+            </Link>
           </div>
         </div>
       </section>
