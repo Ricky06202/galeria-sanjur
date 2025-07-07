@@ -1,11 +1,9 @@
-
 export default function Page() {
   return (
     <div className="antialiased">
       {/* Header Section */}
       <header className="bg-white shadow-sm py-4 sticky top-0 left-0 right-0 z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          
           {/* Navigation Links */}
           <nav className="flex items-center justify-center gap-4 w-full">
             <ul className="flex space-x-4">
@@ -41,18 +39,15 @@ export default function Page() {
       {/* Hero Section */}
       <section
         id="inicio"
-        className="relative bg-cover bg-center h-screen flex items-center justify-center text-white"
-        style={{
-          backgroundImage:
-            "url('https://placehold.co/1920x1080/333333/FFFFFF?text=Tu+Vision+en+3D')",
-        }}
+        className="relative bg-center h-screen flex items-center justify-center text-white"
       >
         <div className="absolute inset-0 bg-black opacity-60"></div>
-        <div className="container mx-auto px-4 text-center z-10">
+        <div className="container mx-auto px-4 text-center z-10 flex flex-col items-center">
           <h2 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
             Transformando Ideas en Realidad con{' '}
             <span className="text-green-400">Impresión 3D</span>
           </h2>
+          <img src="/logo.png" alt="Logo" className="w-1/4 mb-4" />
           <p className="text-lg md:text-xl mb-8">
             En Topografía Especializada S.A., damos vida a tus proyectos con
             diseños innovadores y un compromiso firme con la sostenibilidad.

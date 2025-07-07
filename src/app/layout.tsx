@@ -5,6 +5,9 @@ import { SessionProvider } from 'next-auth/react'
 export const metadata: Metadata = {
   title: 'Medallas Sanjur',
   description: 'Galeria de Medallas hechas por la Familia Sanjur',
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default function RootLayout({

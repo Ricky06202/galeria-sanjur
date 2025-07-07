@@ -11,7 +11,7 @@ model Creaciones {
   id                    Int                     @id @default(autoincrement())
   nombre                String                  @unique
   descripcion           String
-  imagen                String                  @db.Text
+  imagen                String                 
   duracion              Int
   precio                Float
   categoria_id          Int?
@@ -23,7 +23,7 @@ model Creaciones {
 model Galeria_Creaciones {
   id            Int        @id @default(autoincrement())
   creaciones_id Int
-  imagen        String     @db.Text
+  imagen        String     
   creaciones    Creaciones @relation(fields: [creaciones_id], references: [id], onDelete: Cascade)
 }
 
@@ -36,7 +36,7 @@ model Categoria {
 model Filamentos {
   id                    Int                     @id @default(autoincrement())
   nombre                String                  @unique
-  imagen                String                  @db.Text
+  imagen                String                  
   cantidad              Int
   marca_id              Int?
   color_id              Int?
