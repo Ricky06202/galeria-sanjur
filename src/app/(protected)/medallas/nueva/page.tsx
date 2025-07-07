@@ -43,6 +43,11 @@ export default function NuevaMedalla() {
     nombre: '',
   })
 
+  const [editarCategoria, setEditarCategoria] = useState({
+    id: '',
+    nombre: '',
+  })
+
   const [nuevoFilamentoUsado, setNuevoFilamentoUsado] = useState({
     creacion3D: '',
     filamentoUsado: '',
@@ -51,7 +56,7 @@ export default function NuevaMedalla() {
   // 2 Crear Funciones para manejar cambios de los campos
   const manejarCambios = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    seccion: 'creacion' | 'categoria' | 'filamento'
+    seccion: 'creacion' | 'categoria' | 'filamento' | 'editarCategoria'
   ) => {
     const { name, value, type } = e.target
     const files = (e.target as HTMLInputElement).files
@@ -67,6 +72,9 @@ export default function NuevaMedalla() {
         break
       case 'filamento':
         setNuevoFilamentoUsado((prev) => ({ ...prev, [name]: value }))
+        break
+      case 'editarCategoria':
+        setEditarCategoria((prev) => ({ ...prev, [name]: value }))
         break
       default:
         break
@@ -165,6 +173,44 @@ export default function NuevaMedalla() {
         'Hubo un error al crear la categoria. Por favor, inténtalo de nuevo.'
       )
     }
+  }
+  
+  const manejarEnvioCategoriaEditar = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (!editarCategoria.id || !editarCategoria.nombre.trim()) {
+      toast.error('Por favor, completa todos los campos correctamente.')
+      return
+    }
+    // 2 Enviar Datos
+    const formData = {
+      nombre: editarCategoria.nombre,
+    }
+    try {
+      const response = await fetch(`/api/categorias/${editarCategoria.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+
+      fetchCategorias()
+
+      // const data = await response.json()
+      console.log('Categoria editada exitosamente')
+      toast.success('Categoria editada exitosamente')
+    } catch (error) {
+      console.error('Error al editar la categoria:', error)
+      toast.error(
+        'Hubo un error al editar la categoria. Por favor, inténtalo de nuevo.'
+      )
+    }
+
   }
 
   const manejarEnvioFilamentoUsado = async (e: FormEvent<HTMLFormElement>) => {
@@ -331,6 +377,48 @@ export default function NuevaMedalla() {
               name="nombre"
               value={nuevaCategoria.nombre}
               onChange={(e) => manejarCambios(e, 'categoria')}
+              placeholder="Ej. 'Miniaturas'"
+            />
+
+            <button
+              type="submit"
+              className="bg-green-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-green-800 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 focus:ring-offset-2"
+            >
+              Añadir Categoría
+            </button>
+          </form>
+        </section>
+
+        {/* Sección: Editar Categoría */}
+        <section
+          id="editarCategoria"
+          className="bg-gradient-to-br from-green-50 to-gray-50 p-8 rounded-xl shadow-lg border border-green-100 transition-all duration-300 hover:shadow-2xl"
+        >
+          <h2 className="text-4xl font-extrabold text-center text-green-900 mb-8 tracking-tight">
+            Editar una Categoría
+          </h2>
+          <form
+            className="flex flex-col items-center justify-center space-y-7"
+            onSubmit={manejarEnvioCategoriaEditar}
+          >
+            {/** Campo: Categoria id */}
+            <SelectInput
+              label="Categoría"
+              name="id"
+              value={editarCategoria.id}
+              onChange={(e) => manejarCambios(e, 'editarCategoria')}
+              options={categorias.map((categoria) => ({
+                value: categoria.id.toString(),
+                label: categoria.nombre,
+              }))}
+              placeholder="Selecciona una categoría"
+            />
+            {/* Campo: Categoría */}
+            <TextInput
+              label="Nombre de la Categoría"
+              name="nombre"
+              value={editarCategoria.nombre}
+              onChange={(e) => manejarCambios(e, 'editarCategoria')}
               placeholder="Ej. 'Miniaturas'"
             />
 

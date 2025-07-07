@@ -10,6 +10,7 @@ import { fileToBase64 } from '@/modules/shared/logic/convertImageToBase64'
 import { put } from '@vercel/blob'
 import { upload } from '@vercel/blob/client'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function NuevaMedalla() {
 
@@ -44,10 +45,16 @@ export default function NuevaMedalla() {
     valor_hex: '',
   })
 
+  const [editarColor, setEditarColor] = useState({
+    id: '',
+    nombre: '',
+    valor_hex: '',
+  })
+
   // 2 Crear Funciones para manejar cambios de los campos
   const manejarCambios = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    seccion: 'filamento' | 'marca' | 'color'
+    seccion: 'filamento' | 'marca' | 'color' | 'editarColor'
   ) => {
     const { name, value, type } = e.target
     const files = (e.target as HTMLInputElement).files
@@ -63,6 +70,9 @@ export default function NuevaMedalla() {
         break
       case 'color':
         setNuevoColor((prev) => ({ ...prev, [name]: value }))
+        break
+      case 'editarColor':
+        setEditarColor((prev) => ({ ...prev, [name]: value }))
         break
       default:
         break
@@ -81,7 +91,7 @@ export default function NuevaMedalla() {
       !nuevoFilamento.marca ||
       !nuevoFilamento.color
     ) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
 
@@ -113,10 +123,10 @@ export default function NuevaMedalla() {
       }
 
       console.log('Filamento creado exitosamente')
-      alert('Filamento creado exitosamente')
+      toast.success('Filamento creado exitosamente')
     } catch (error) {
       console.error('Error al crear el filamento:', error)
-      alert(
+      toast.error(
         'Hubo un error al crear el filamento. Por favor, inténtalo de nuevo.'
       )
     }
@@ -127,7 +137,7 @@ export default function NuevaMedalla() {
     // 1 Validar Campos
 
     if (!nuevaMarca.nombre.trim()) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
     // 2 Enviar Datos
@@ -151,10 +161,10 @@ export default function NuevaMedalla() {
       fetchMarcas()
 
       console.log('Marca creada exitosamente')
-      alert('Marca creada exitosamente')
+      toast.success('Marca creada exitosamente')
     } catch (error) {
       console.error('Error al crear la marca:', error)
-      alert('Hubo un error al crear la marca. Por favor, inténtalo de nuevo.')
+      toast.error('Hubo un error al crear la marca. Por favor, inténtalo de nuevo.')
     }
   }
 
@@ -162,12 +172,12 @@ export default function NuevaMedalla() {
     e.preventDefault()
     // 1 Validar Campos
     if (!nuevoColor.nombre.trim() || !nuevoColor.valor_hex.trim()) {
-      alert('Por favor, completa todos los campos correctamente.')
+      toast.error('Por favor, completa todos los campos correctamente.')
       return
     }
 
     if (!nuevoColor.valor_hex.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)) {
-      alert('El Valor debe ser un color en formato hexadecimal.')
+      toast.error('El Valor debe ser un color en formato hexadecimal.')
       return
     }
     // 2 Enviar Datos
@@ -192,10 +202,50 @@ export default function NuevaMedalla() {
       fetchColores()
 
       console.log('Color creado exitosamente')
-      alert('Color creado exitosamente')
+      toast.success('Color creado exitosamente')
     } catch (error) {
       console.error('Error al crear el color:', error)
-      alert('Hubo un error al crear el color. Por favor, inténtalo de nuevo.')
+      toast.error('Hubo un error al crear el color. Por favor, inténtalo de nuevo.')
+    }
+  }
+
+  const manejarEnvioColorEditar = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!editarColor.id || !editarColor.nombre.trim() || !editarColor.valor_hex.trim()) {
+      toast.error('Por favor, completa todos los campos correctamente.')
+      return
+    }
+
+    if (!editarColor.valor_hex.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)) {
+      toast.error('El Valor debe ser un color en formato hexadecimal.')
+      return
+    }
+
+    const formData = {
+      nombre: editarColor.nombre,
+      valor_hex: editarColor.valor_hex,
+    }
+
+    try {
+      const response = await fetch(`/api/colores/${editarColor.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+
+      fetchColores()
+
+      console.log('Color editado exitosamente')
+      toast.success('Color editado exitosamente')
+    } catch (error) {
+      console.error('Error al editar el color:', error)
+      toast.error('Hubo un error al editar el color. Por favor, inténtalo de nuevo.')
     }
   }
 
@@ -333,6 +383,57 @@ export default function NuevaMedalla() {
             className="flex flex-col items-center justify-center space-y-7"
             onSubmit={manejarEnvioColor}
           >
+            {/* Campo: nombre */}
+            <TextInput
+              label="Nombre del Color"
+              name="nombre"
+              value={nuevoColor.nombre}
+              onChange={(e) => manejarCambios(e, 'color')}
+              placeholder="Ej. 'Rojo'"
+            />
+
+            {/* Campo: valor hex */}
+            <TextInput
+              label="Valor Hexadecimal"
+              name="valor_hex"
+              value={nuevoColor.valor_hex}
+              onChange={(e) => manejarCambios(e, 'color')}
+              placeholder="Ej. '#FFFFFF'"
+            />
+
+            <button
+              type="submit"
+              className="bg-purple-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl hover:bg-purple-800 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300 focus:ring-offset-2"
+            >
+              Añadir Color
+            </button>
+          </form>
+        </section>
+
+        {/* Sección: Editar Color */}
+        <section
+          id="editarColor"
+          className="bg-gradient-to-br from-purple-50 to-gray-50 p-8 rounded-xl shadow-lg border border-purple-100 transition-all duration-300 hover:shadow-2xl"
+        >
+          <h2 className="text-4xl font-extrabold text-center text-purple-900 mb-8 tracking-tight">
+            Editar un Color
+          </h2>
+          <form
+            className="flex flex-col items-center justify-center space-y-7"
+            onSubmit={manejarEnvioColor}
+          >
+            {/* Campo: id */}
+            <SelectInput
+              label="Color"
+              name="id"
+              value={editarColor.id}
+              onChange={(e) => manejarCambios(e, 'editarColor')}
+              placeholder="Selecciona un Color"
+              options={colores.map((color) => ({
+                value: color.id.toString(),
+                label: color.nombre,
+              }))}
+            />
             {/* Campo: nombre */}
             <TextInput
               label="Nombre del Color"
