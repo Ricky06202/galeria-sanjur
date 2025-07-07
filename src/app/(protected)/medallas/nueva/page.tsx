@@ -8,6 +8,9 @@ import NumberInput from '@/modules/shared/components/NumberInput'
 import SelectInput from '@/modules/shared/components/SelectInput'
 import TextInput from '@/modules/shared/components/TextInput'
 import { fileToBase64 } from '@/modules/shared/logic/convertImageToBase64'
+import { put } from '@vercel/blob'
+import { upload } from '@vercel/blob/client';
+
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 export default function NuevaMedalla() {
@@ -27,6 +30,7 @@ export default function NuevaMedalla() {
   // 1 Crear Estados para los campos del formulario
   const [nuevaCreacion, setNuevaCreacion] = useState({
     nombre: '',
+    descripcion: '',
     imagen: null as File | null,
     duracionHoras: '',
     duracionMinutos: '',
@@ -77,18 +81,23 @@ export default function NuevaMedalla() {
     if (
       !nuevaCreacion.nombre.trim() ||
       !nuevaCreacion.imagen ||
-      !nuevaCreacion.categoria
+      !nuevaCreacion.categoria ||
+      !nuevaCreacion.descripcion
     ) {
       alert('Por favor, completa todos los campos correctamente.')
       return
     }
 
     // 2 Enviar Datos
-    const imagenBase64 = await fileToBase64(nuevaCreacion.imagen)
+    const blob = await upload(nuevaCreacion.nombre, nuevaCreacion.imagen, {
+      access: 'public',
+      handleUploadUrl: '/api/blob',
+    })
 
     const formData = {
       nombre: nuevaCreacion.nombre,
-      imagen: imagenBase64,
+      descripcion: nuevaCreacion.descripcion,
+      imagen: blob.url,
       duracion:
         parseInt(nuevaCreacion.duracionHoras) * 60 +
         parseInt(nuevaCreacion.duracionMinutos),
@@ -229,6 +238,15 @@ export default function NuevaMedalla() {
               placeholder="Ej. 'Dragón Alado'"
               name="nombre"
               value={nuevaCreacion.nombre}
+              onChange={(e) => manejarCambios(e, 'creacion')}
+            />
+
+            {/* Campo: Descripción */}
+            <TextInput
+              label="Descripción de la Creación"
+              placeholder="Ej. 'Descripción de la Creación'"
+              name="descripcion"
+              value={nuevaCreacion.descripcion}
               onChange={(e) => manejarCambios(e, 'creacion')}
             />
 

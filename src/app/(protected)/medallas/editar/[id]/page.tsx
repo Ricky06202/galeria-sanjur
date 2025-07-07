@@ -13,6 +13,8 @@ import NumberInput from '@/modules/shared/components/NumberInput'
 import SelectInput from '@/modules/shared/components/SelectInput'
 import TextInput from '@/modules/shared/components/TextInput'
 import { useGaleriaStore } from '@/modules/medallas/stores/galeriaStore'
+import { put } from '@vercel/blob'
+import { upload } from '@vercel/blob/client'
 
 export default function EditarMedalla() {
   const { id } = useParams()
@@ -97,6 +99,7 @@ export default function EditarMedalla() {
   // 1 Crear Estados para los campos del formulario
   const [nuevaCreacion, setNuevaCreacion] = useState({
     nombre: '',
+    descripcion: '',
     imagen: null as File | null,
     duracionHoras: '',
     duracionMinutos: '',
@@ -140,18 +143,23 @@ export default function EditarMedalla() {
     if (
       !nuevaCreacion.nombre.trim() ||
       !nuevaCreacion.imagen ||
-      !nuevaCreacion.categoria
+      !nuevaCreacion.categoria ||
+      !nuevaCreacion.descripcion
     ) {
       alert('Por favor, completa todos los campos correctamente.')
       return
     }
 
     // 2 Enviar Datos
-    const imagenBase64 = await fileToBase64(nuevaCreacion.imagen)
+    const blob = await upload(nuevaCreacion.nombre, nuevaCreacion.imagen, {
+      access: 'public',
+      handleUploadUrl: '/api/blob',
+    })
 
     const formData = {
       nombre: nuevaCreacion.nombre,
-      imagen: imagenBase64,
+      descripcion: nuevaCreacion.descripcion,
+      imagen: blob.url,
       duracion:
         parseInt(nuevaCreacion.duracionHoras) * 60 +
         parseInt(nuevaCreacion.duracionMinutos),
@@ -224,9 +232,12 @@ export default function EditarMedalla() {
       alert('Por favor, completa todos los campos correctamente.')
       return
     }
-    const imagenBase64 = await fileToBase64(nuevaGaleria.imagen)
+    const blob = await upload(creacion.nombre, nuevaGaleria.imagen, {
+      access: 'public',
+      handleUploadUrl: '/api/blob',
+    })
     const formData = {
-      imagen: imagenBase64,
+      imagen: blob.url,
     }
     try {
       const response = await fetch(`/api/galeria_creaciones/${id}`, {
@@ -257,9 +268,12 @@ export default function EditarMedalla() {
       alert('Por favor, completa todos los campos correctamente.')
       return
     }
-    const imagenBase64 = await fileToBase64(editarGaleria.imagen)
+    const blob = await upload(creacion.nombre, editarGaleria.imagen, {
+      access: 'public',
+      handleUploadUrl: '/api/blob',
+    })
     const formData = {
-      imagen: imagenBase64,
+      imagen: blob.url,
     }
     try {
       const response = await fetch(
@@ -313,6 +327,7 @@ export default function EditarMedalla() {
     }
     setNuevaCreacion({
       nombre: data.nombre,
+      descripcion: data.descripcion,
       imagen: fileImage,
       duracionHoras: Math.trunc(data.duracion / 60).toString(),
       duracionMinutos: (data.duracion % 60).toString(),
@@ -349,6 +364,15 @@ export default function EditarMedalla() {
               placeholder="Ej. 'Dragón Alado'"
               name="nombre"
               value={nuevaCreacion.nombre}
+              onChange={(e) => manejarCambios(e, 'creacion')}
+            />
+
+            {/* Campo: Descripción */}
+            <TextInput
+              label="Descripción de la Creación"
+              placeholder="Ej. 'Descripción de la Creación'"
+              name="descripcion"
+              value={nuevaCreacion.descripcion}
               onChange={(e) => manejarCambios(e, 'creacion')}
             />
 

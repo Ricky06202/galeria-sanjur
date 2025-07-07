@@ -7,6 +7,8 @@ import NumberInput from '@/modules/shared/components/NumberInput'
 import SelectInput from '@/modules/shared/components/SelectInput'
 import TextInput from '@/modules/shared/components/TextInput'
 import { fileToBase64 } from '@/modules/shared/logic/convertImageToBase64'
+import { put } from '@vercel/blob'
+import { upload } from '@vercel/blob/client'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 export default function NuevaMedalla() {
@@ -84,11 +86,14 @@ export default function NuevaMedalla() {
     }
 
     // 2 Enviar Datos
-    const imagenBase64 = await fileToBase64(nuevoFilamento.imagen)
+    const blob = await upload(nuevoFilamento.nombre, nuevoFilamento.imagen, {
+      access: 'public',
+      handleUploadUrl: '/api/blob',
+    })
 
     const formData = {
       nombre: nuevoFilamento.nombre,
-      imagen: imagenBase64,
+      imagen: blob.url,
       cantidad: parseInt(nuevoFilamento.cantidad),
       marca_id: parseInt(nuevoFilamento.marca),
       color_id: parseInt(nuevoFilamento.color),
