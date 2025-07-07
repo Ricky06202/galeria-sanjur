@@ -153,6 +153,8 @@ export default function NuevaMedalla() {
         throw new Error(response.statusText)
       }
 
+      fetchCategorias()
+
       // const data = await response.json()
       console.log('Categoria creada exitosamente')
       alert('Categoria creada exitosamente')

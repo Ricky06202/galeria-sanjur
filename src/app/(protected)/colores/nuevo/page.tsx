@@ -148,6 +148,8 @@ export default function NuevaMedalla() {
         throw new Error(response.statusText)
       }
 
+      fetchMarcas()
+
       console.log('Marca creada exitosamente')
       alert('Marca creada exitosamente')
     } catch (error) {
@@ -186,6 +188,8 @@ export default function NuevaMedalla() {
       if (!response.ok) {
         throw new Error(response.statusText)
       }
+
+      fetchColores()
 
       console.log('Color creado exitosamente')
       alert('Color creado exitosamente')
