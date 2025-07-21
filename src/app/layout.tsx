@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { SessionProvider } from 'next-auth/react'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'Medallas Sanjur',
@@ -21,6 +22,7 @@ export default function RootLayout({
         <SessionProvider>
           <div className="w-full max-w-7xl mx-auto">{children}</div>
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   )
