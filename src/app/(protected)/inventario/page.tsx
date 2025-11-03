@@ -71,3 +71,6 @@ export default function Page() {
     </div>
   )
 }
+
+
+//TODO Agregar Modo Cuadrados grandes para Papa
