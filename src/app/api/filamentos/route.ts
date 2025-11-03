@@ -7,6 +7,7 @@ export async function GET() {
       nombre: true,
       imagen: true,
       cantidad: true,
+      gramos: true,
       Marca: {
         select: {
           id: true,

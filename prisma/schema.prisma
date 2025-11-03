@@ -3,15 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Creaciones {
   id                    Int                     @id @default(autoincrement())
   nombre                String                  @unique
   descripcion           String
-  imagen                String                 
+  imagen                String
   duracion              Int
   precio                Float
   categoria_id          Int?
@@ -23,7 +23,7 @@ model Creaciones {
 model Galeria_Creaciones {
   id            Int        @id @default(autoincrement())
   creaciones_id Int
-  imagen        String     
+  imagen        String
   creaciones    Creaciones @relation(fields: [creaciones_id], references: [id], onDelete: Cascade)
 }
 
@@ -36,8 +36,9 @@ model Categoria {
 model Filamentos {
   id                    Int                     @id @default(autoincrement())
   nombre                String                  @unique
-  imagen                String                  
+  imagen                String
   cantidad              Int
+  gramos                Int                     @default(0)
   marca_id              Int?
   color_id              Int?
   Color                 Color?                  @relation(fields: [color_id], references: [id], onDelete: SetNull)

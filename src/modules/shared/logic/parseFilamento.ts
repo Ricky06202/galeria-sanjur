@@ -6,6 +6,7 @@ export function parseFilamento(filamento: any): Filamento {
     nombre: filamento.nombre,
     imagen: filamento.imagen,
     cantidad: filamento.cantidad,
+    gramos: filamento.gramos,
     Color: {
       id: filamento.Color.id,
       nombre: filamento.Color.nombre,

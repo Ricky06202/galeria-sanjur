@@ -12,6 +12,7 @@ export async function GET(
       nombre: true,
       imagen: true,
       cantidad: true,
+      gramos: true,
       Marca: {
         select: {
           id: true,
@@ -51,6 +52,7 @@ export async function PUT(
       nombre: data.nombre,
       imagen: data.imagen,
       cantidad: data.cantidad,
+      gramos: data.gramos,
       marca_id: data.marca_id,
       color_id: data.color_id,
     },

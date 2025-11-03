@@ -5,6 +5,7 @@ export type Filamento = {
   nombre: string;
   imagen: string;
   cantidad: number;
+  gramos: number
   Color: Color
   Marca: Marca
 }
