@@ -2,6 +2,7 @@
 import { ListColores } from '@/modules/colores/components/ListColores'
 import { useColoresStore } from '@/modules/colores/stores/coloresStore'
 import { useFilamentosStore } from '@/modules/colores/stores/filamentosStore'
+import { useMarcasStore } from '@/modules/colores/stores/marcasStore'
 import { Dropdown } from '@/modules/shared/components/Dropdown'
 import { SearchBar } from '@/modules/shared/components/SearchBar'
 import { useSession } from 'next-auth/react'
@@ -12,12 +13,17 @@ export default function ColoresPage() {
   const [busqueda, setBusqueda] = useState<string>('')
   const [color, setColor] = useState<string>('')
   const [disponibilidad, setDisponibilidad] = useState<string>('')
+  const [tipo, setTipo] = useState<string>('')
 
   const filamentos = useFilamentosStore((state) => state.filamentosFiltrados)
   const fetchFilamentos = useFilamentosStore((state) => state.fetchFilamentos)
 
+  const marcas = useMarcasStore((state) => state.marcas)
+  const fetchMarcas = useMarcasStore((state) => state.fetchMarcas)
+
   const filtrarBusqueda = useFilamentosStore((state) => state.filtrarBusqueda)
   const filtrarColor = useFilamentosStore((state) => state.filtrarColor)
+  const filtrarMarca = useFilamentosStore((state) => state.filtrarMarca)
   const filtrarDisponibilidad = useFilamentosStore(
     (state) => state.filtrarDisponibilidad
   )
@@ -29,14 +35,16 @@ export default function ColoresPage() {
   useEffect(() => {
     fetchFilamentos()
     fetchColores()
+    fetchMarcas()
   }, [])
 
   useEffect(() => {
     filtroReset()
     filtrarBusqueda(busqueda)
     filtrarColor(color)
+    filtrarMarca(tipo)
     filtrarDisponibilidad(disponibilidad)
-  }, [busqueda, color, disponibilidad])
+  }, [busqueda, color, tipo, disponibilidad])
 
   const redirigirPagina = () => {
     redirect('/colores/nuevo')
@@ -58,6 +66,12 @@ export default function ColoresPage() {
           options={['Todo', ...colores.map((color) => color.nombre)]}
           value={color}
           onChange={(e) => setColor(e.target.value)}
+        />
+        <Dropdown
+          title="Filtrar por Tipo"
+          options={['Todo', ...marcas.map((marca) => marca.nombre)]}
+          value={tipo}
+          onChange={(e) => setTipo(e.target.value)}
         />
         <Dropdown
           title="Disponibilidad"

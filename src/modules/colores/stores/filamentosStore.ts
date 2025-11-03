@@ -9,6 +9,7 @@ type filamentosStore = {
   deleteFilamento: (id: number) => void
   filtrarBusqueda: (busqueda: string) => void
   filtrarColor: (color: string) => void
+  filtrarMarca: (marca: string) => void
   filtrarDisponibilidad: (disponibilidad: string) => void
   filtroReset: () => void
 }
@@ -55,6 +56,17 @@ export const useFilamentosStore = create<filamentosStore>()((set) => ({
           ? state.filamentosFiltrados
           : state.filamentosFiltrados.filter((colorf) =>
               colorf.Color.nombre.includes(color)
+            ),
+    }))
+  },
+
+  filtrarMarca: (marca) => {
+    set((state) => ({
+      filamentosFiltrados:
+        marca === 'Todo'
+          ? state.filamentosFiltrados
+          : state.filamentosFiltrados.filter((marcaf) =>
+              marcaf.Marca.nombre.includes(marca)
             ),
     }))
   },
