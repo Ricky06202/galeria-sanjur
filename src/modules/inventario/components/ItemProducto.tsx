@@ -51,7 +51,7 @@ export default function ItemProducto({
       <span className="flex items-center justify-center text-center">
         {nombre}
       </span>
-      <span className="flex items-center justify-center">
+      <span className="flex items-center justify-center flex-col">
         <Badge
           style={{
             backgroundColor: color.valor_hex,
@@ -59,6 +59,14 @@ export default function ItemProducto({
           }}
         >
           {color.nombre}
+        </Badge>
+        <Badge
+          style={{
+            backgroundColor: color.valor_hex,
+            color: getAppropriateTextColor(color.valor_hex),
+          }}
+        >
+          {color.valor_hex}
         </Badge>
       </span>
       <span className="flex items-center justify-center">{marca}</span>
