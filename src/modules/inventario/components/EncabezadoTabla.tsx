@@ -44,7 +44,7 @@ export default function EncabezadoTabla({
         className="flex items-center justify-center cursor-pointer select-none"
         onClick={handleSortMarca}
       >
-        Marca{' '}
+        Tipo{' '}
         {sortMarca === 'asc' ? (
           <ArrowUp />
         ) : sortMarca === 'desc' ? (
