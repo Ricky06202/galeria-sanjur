@@ -46,9 +46,9 @@ export default function EncabezadoTabla({
       >
         Tipo{' '}
         {sortMarca === 'asc' ? (
-          <ArrowUp />
-        ) : sortMarca === 'desc' ? (
           <ArrowDown />
+        ) : sortMarca === 'desc' ? (
+          <ArrowUp />
         ) : null}
       </span>
       <span
@@ -57,9 +57,9 @@ export default function EncabezadoTabla({
       >
         Gramos{' '}
         {sortGramos === 'asc' ? (
-          <ArrowUp />
-        ) : sortGramos === 'desc' ? (
           <ArrowDown />
+        ) : sortGramos === 'desc' ? (
+          <ArrowUp />
         ) : null}
       </span>
       <span className="flex items-center justify-center select-none">
