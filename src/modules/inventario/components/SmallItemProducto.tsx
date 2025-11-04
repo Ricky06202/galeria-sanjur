@@ -14,7 +14,7 @@ interface ItemProductoProps {
   gramos: number
 }
 
-export default function ItemProducto({
+export default function SmallItemProducto({
   id,
   imagen,
   nombre,

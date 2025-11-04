@@ -1,12 +1,17 @@
 'use client'
-import EncabezadoTabla from '@/modules/inventario/components/EncabezadoTabla'
-import ItemProducto from '@/modules/inventario/components/ItemProducto'
 import React, { useEffect } from 'react'
 import { useFilamentosStore } from '@/modules/colores/stores/filamentosStore'
 import { Filamento } from '@/modules/shared/constants/filamentoType'
+import SmallProductList from '@/modules/inventario/components/SmallProductList'
+import BigProductList from '@/modules/inventario/components/BigProductList'
+import { SearchBar } from '@/modules/shared/components/SearchBar'
+import ToggleButton from '@mui/material/ToggleButton'
+import { Dropdown } from '@/modules/shared/components/Dropdown'
+import { useColoresStore } from '@/modules/colores/stores/coloresStore'
+import { useMarcasStore } from '@/modules/colores/stores/marcasStore'
 
 export default function Page() {
-  const filamentos = useFilamentosStore((state) => state.filamentos)
+  const filamentos = useFilamentosStore((state) => state.filamentosFiltrados)
   const [sortedFilamentos, setSortedFilamentos] =
     React.useState<Filamento[]>(filamentos)
   const fetchFilamentos = useFilamentosStore((state) => state.fetchFilamentos)
@@ -17,6 +22,8 @@ export default function Page() {
   const [sortGramos, setSortGramos] = React.useState<'asc' | 'desc' | 'none'>(
     'none'
   )
+
+  const [viewMode, setViewMode] = React.useState<'small' | 'big'>('small')
 
   useEffect(() => {
     fetchFilamentos()
@@ -47,30 +54,96 @@ export default function Page() {
     setSortedFilamentos(newSortedFilamentos)
   }, [sortMarca, sortGramos, filamentos])
 
+  const [searchValue, setSearchValue] = React.useState('')
+  const [filterColor, setFilterColor] = React.useState('')
+  const [filterType, setFilterType] = React.useState('')
+
+  useEffect(() => {
+    filtroReset()
+    filtrarBusqueda(searchValue)
+    filtrarColor(filterColor)
+    filtrarMarca(filterType)
+    setSortedFilamentos(filamentos)
+  }, [searchValue, filterColor, filterType])
+
+  const filtrarBusqueda = useFilamentosStore((state) => state.filtrarBusqueda)
+  const filtrarColor = useFilamentosStore((state) => state.filtrarColor)
+  const filtrarMarca = useFilamentosStore((state) => state.filtrarMarca)
+  const filtroReset = useFilamentosStore((state) => state.filtroReset)
+
+  useEffect(() => {}, [searchValue, filterColor, filterType])
+
+  const colores = useColoresStore((state) => state.colores)
+  const tipos = useMarcasStore((state) => state.marcas)
+
   return (
-    <div className="w-3xl mx-auto p-4 bg-white shadow-lg rounded-lg">
-      <ul className="flex flex-col gap-1">
-        <EncabezadoTabla
+    <div className="mx-auto p-4 bg-white shadow-lg rounded-lg">
+      <div className="flex items-center justify-between gap-4">
+        <SearchBar
+          value={searchValue}
+          placeholder="Busca por color, tipo o nombre"
+          onChange={(value) => {
+            setSearchValue(value.target.value)
+          }}
+        />
+        <Dropdown
+          value={filterColor}
+          title="Filtrar por color"
+          options={['Todo', ...colores.map((color) => color.nombre)]}
+          onChange={(value) => {
+            setFilterColor(value.target.value)
+          }}
+        />
+        <Dropdown
+          title="Filtrar por tipo"
+          options={['Todo', ...tipos.map((tipo) => tipo.nombre)]}
+          value={filterType}
+          onChange={(value) => {
+            setFilterType(value.target.value)
+          }}
+        />
+        <Dropdown
+          value={
+            sortGramos === 'asc'
+              ? 'Asc'
+              : sortGramos === 'desc'
+              ? 'Desc'
+              : 'none'
+          }
+          title={`Ordenar por gramos (${sortGramos})`}
+          options={['Desordenado', 'Asc', 'Desc']}
+          onChange={(value) => {
+            setSortGramos(
+              value.target.value === 'Desordenado'
+                ? 'none'
+                : value.target.value === 'Asc'
+                ? 'asc'
+                : 'desc'
+            )
+          }}
+        />
+        <ToggleButton
+          value={viewMode === 'small'}
+          selected={viewMode === 'small'}
+          onChange={() => {
+            setViewMode(viewMode === 'small' ? 'big' : 'small')
+          }}
+        >
+          {viewMode === 'small' ? 'Vista pequeña' : 'Vista grande'}
+        </ToggleButton>
+      </div>
+
+      {viewMode === 'small' ? (
+        <SmallProductList
+          sortedFilamentos={sortedFilamentos}
           sortMarca={sortMarca}
           sortGramos={sortGramos}
           setSortMarca={setSortMarca}
           setSortGramos={setSortGramos}
         />
-        {sortedFilamentos.map((filamento: Filamento) => (
-          <ItemProducto
-            key={filamento.id} // Es importante usar una 'key' única
-            id={filamento.id}
-            imagen={filamento.imagen}
-            nombre={filamento.nombre}
-            color={filamento.Color}
-            marca={filamento.Marca?.nombre}
-            gramos={filamento.gramos}
-          />
-        ))}
-      </ul>
+      ) : (
+        <BigProductList sortedFilamentos={sortedFilamentos} />
+      )}
     </div>
   )
 }
-
-
-//TODO Agregar Modo Cuadrados grandes para Papa
